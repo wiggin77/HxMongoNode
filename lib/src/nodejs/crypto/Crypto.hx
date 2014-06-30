@@ -96,20 +96,20 @@ extern class Crypto
 	 * Returns an array with the names of the supported ciphers.
 	 * @return
 	 */
-	function getCiphers() : Array<String>;
+	static function getCiphers() : Array<String>;
 	
 	/**
 	 * Returns an array with the names of the supported hash algorithms.
 	 * @return
 	 */
-	function getHashes() : Array<String>;
+	static function getHashes() : Array<String>;
 	
 	/**
 	 * Creates a credentials object, with the optional details being a dictionary with keys:
 	 * @param	details
 	 * @return
 	 */
-	function createCredentials(details : CredentialOption):Dynamic;
+	static function createCredentials(details : CredentialOption):Dynamic;
 	
 	/**
 	 * Creates and returns a hash object, a cryptographic hash with the given algorithm which can be used to generate hash digests.
@@ -119,7 +119,7 @@ extern class Crypto
 	 * @param	algorithm
 	 * @return
 	 */
-	function createHash(algorithm : String) : Dynamic;
+	static function createHash(algorithm : String) : Dynamic;
 	
 	
 	/**
@@ -132,7 +132,7 @@ extern class Crypto
 	 * @param	key
 	 * @return
 	 */
-	function createHmac(algorithm : String, key : Dynamic) : Hmac;
+	static function createHmac(algorithm : String, key : Dynamic) : Hmac;
 	
 	
 	/**
@@ -144,7 +144,7 @@ extern class Crypto
 	 * @param	password
 	 * @return
 	 */
-	function createCipher(algorithm : String, password : String) : Cipher;
+	static function createCipher(algorithm : String, password : String) : Cipher;
 	
 	
 	/**
@@ -158,7 +158,7 @@ extern class Crypto
 	 * @param	iv
 	 * @return
 	 */
-	function createCipheriv(algorithm : String, key : Dynamic, iv:Dynamic) : Cipher;
+	static function createCipheriv(algorithm : String, key : Dynamic, iv:Dynamic) : Cipher;
 	
 	/**
 	 * Creates and returns a decipher object, with the given algorithm and key. This is the mirror of the createCipher() above.
@@ -166,7 +166,7 @@ extern class Crypto
 	 * @param	password
 	 * @return
 	 */
-	function createDecipher(algorithm : String, password : String) : Decipher;
+	static function createDecipher(algorithm : String, password : String) : Decipher;
 	
 	/**
 	 * Creates and returns a decipher object, with the given algorithm, key and iv. This is the mirror of the createCipheriv() above.
@@ -175,7 +175,7 @@ extern class Crypto
 	 * @param	iv
 	 * @return
 	 */
-	function createDecipheriv(algorithm : String, key : Dynamic, iv : Dynamic) : Decipher;
+	static function createDecipheriv(algorithm : String, key : Dynamic, iv : Dynamic) : Decipher;
 	
 	
 	/**
@@ -185,14 +185,14 @@ extern class Crypto
 	 * @param	algorithm
 	 * @return
 	 */
-	function createSign(algorithm : String) : Sign;
+	static function createSign(algorithm : String) : Sign;
 	
 	/**
 	 * Creates and returns a verification object, with the given algorithm. This is the mirror of the signing object above.
 	 * @param	algorithm
 	 * @return
 	 */
-	function createVerify(algorithm : String) : Verify;
+	static function createVerify(algorithm : String) : Verify;
 	
 	
 	/**
@@ -201,7 +201,7 @@ extern class Crypto
 	 * @return
 	 */
 	@:overload(function (prime_length : Int,p_encoding:String) : Dynamic {})
-	function createDiffieHellman(prime_length : Int) : Dynamic;
+	static function createDiffieHellman(prime_length : Int) : Dynamic;
 	
 	/**
 	 * Creates a predefined Diffie-Hellman key exchange object. 
@@ -212,7 +212,7 @@ extern class Crypto
 	 * @param	group_name
 	 * @return
 	 */
-	function getDiffieHellman(group_name : String) : DiffieHellman;
+	static function getDiffieHellman(group_name : String) : DiffieHellman;
 	
 	
 	/**
@@ -225,7 +225,7 @@ extern class Crypto
 	 * @param	callback
 	 * @return
 	 */
-	function pbkdf2(password : String, salt : Dynamic, iterations : Int, keylen : Int, callback : String -> Dynamic -> Void) : Void;
+	static function pbkdf2(password : String, salt : Dynamic, iterations : Int, keylen : Int, callback : String -> Dynamic -> Void) : Void;
 	
 	/**
 	 * Synchronous PBKDF2 function. Returns derivedKey or throws error.
@@ -235,7 +235,7 @@ extern class Crypto
 	 * @param	keylen
 	 * @return
 	 */
-	function pbkdf2Sync(password : String, salt : Dynamic, iterations : Int, keylen : Int) : Dynamic;
+	static function pbkdf2Sync(password : String, salt : Dynamic, iterations : Int, keylen : Int) : Dynamic;
 	
 	
 	/**
@@ -245,7 +245,7 @@ extern class Crypto
 	 * @return
 	 */
 	@:overload(function(size:Int,callback : Error -> Buffer -> Void):Void{})
-	function randomBytes(size : Int) : Buffer;
+	static function randomBytes(size : Int) : Buffer;
 	
 	/**
 	 * Generates non-cryptographically strong pseudo-random data. 
@@ -256,6 +256,6 @@ extern class Crypto
 	 * @return
 	 */
 	@:overload(function(size:Int,callback : Error -> Buffer -> Void):Void{})
-	function pseudoRandomBytes(size : Int) : Buffer;
+	static function pseudoRandomBytes(size : Int) : Buffer;
 	
 }
