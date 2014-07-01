@@ -5,7 +5,7 @@
 
 Extern classes for nodejs.  
 They follow the canonic names found in the **[API](http://nodejs.org/api/index.html)**.  
-Some classes (like URL) have features better grouped.  
+Some classes (like `URL`) have some features better grouped.  
 Probably there will be missing commands and methods.  
 
  **I'm doing this library as helper for my main projects so it will evolve according to my needs**
@@ -32,4 +32,5 @@ Probably there will be missing commands and methods.
   * `multiparty` (upload support for webservices)
   * `express`
   * `cookies`
+  * `authom` (Google, Facebook and others authentication methods)
 
