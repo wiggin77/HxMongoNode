@@ -6,6 +6,7 @@ import js.html.DOMWindow;
 import nodejs.authom.Authom;
 import nodejs.Buffer.BufferConst;
 import nodejs.ChildProcess.ChildProcessTool;
+import nodejs.cookies.Cookies;
 import nodejs.crypto.Cipher;
 import nodejs.crypto.Crypto;
 import nodejs.crypto.DiffieHellman;
@@ -75,6 +76,9 @@ class Main
 	
 	static function main():Void 
 	{ 		
+		var ck : Cookies = new Cookies(null, null);
+		
+		trace(ck);
 		
 	}
 	

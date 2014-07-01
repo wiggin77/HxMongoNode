@@ -25,9 +25,11 @@ Probably there will be missing commands and methods.
  
 ### Dependencies
 
-* Some classes needs `NPM` packages like: **(remember to install them)**
-    * `mongodb`
-    * `peerjs-server`
-    * `nodewebkit`
-    * `multiparty` (upload support for webservices)
-    * `express`
+* Some packages needs `NPM` manager: **(remember to install them)**
+  * `mongodb`
+  * `peerjs-server`
+  * `nodewebkit`
+  * `multiparty` (upload support for webservices)
+  * `express`
+  * `cookies`
+
