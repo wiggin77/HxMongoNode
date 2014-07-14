@@ -1,4 +1,5 @@
 package nodejs.http;
+import nodejs.events.EventEmitter;
 
 /**
  * 
@@ -16,7 +17,7 @@ class HTTPClientRequestEventType
  * ...
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-extern class HTTPClientRequest
+extern class HTTPClientRequest extends EventEmitter
 {
 	
 	var write				: Dynamic;//(chunk, [encoding])

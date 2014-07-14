@@ -3,6 +3,7 @@ import js.Browser;
 import js.Error;
 import js.html.BodyElement;
 import js.html.DOMWindow;
+import js.html.idb.OpenDBRequest;
 import nodejs.authom.Authom;
 import nodejs.Buffer.BufferConst;
 import nodejs.ChildProcess.ChildProcessTool;
@@ -19,6 +20,7 @@ import nodejs.express.ExpressRequest;
 import nodejs.express.ExpressResponse;
 import nodejs.http.HTTP;
 import nodejs.fs.File;
+import nodejs.http.HTTPClientRequest;
 import nodejs.http.IncomingMessage;
 import nodejs.http.ServerResponse;
 import nodejs.http.URL;
@@ -75,10 +77,8 @@ class Main
 {
 	
 	static function main():Void 
-	{ 		
-		var ck : Cookies = new Cookies(null, null);
+	{ 	
 		
-		trace(ck);
 		
 	}
 	
