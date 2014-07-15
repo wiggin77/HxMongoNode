@@ -213,6 +213,8 @@ extern class HTTP
 	 * @param	p_options
 	 * @param	p_callback
 	 */
+	@:overload(function(p_options:String, p_callback : ServerResponse -> Void):HTTPClientRequest { } )
+	@:overload(function(p_options:String):HTTPClientRequest{})
 	@:overload(function(p_options:HTTPRequestOptions):HTTPClientRequest{})
 	static function request(p_options : HTTPRequestOptions, p_callback : ServerResponse -> Void):HTTPClientRequest;
 	
@@ -221,6 +223,8 @@ extern class HTTP
 	 * @param	p_options
 	 * @param	p_callback
 	 */
+	@:overload(function(p_options:String, p_callback : ServerResponse -> Void):HTTPClientRequest { } )
+	@:overload(function(p_options:String):HTTPClientRequest{})
 	@:overload(function (p_options : HTTPRequestOptions):HTTPClientRequest{})
 	static function get(p_options : HTTPRequestOptions, p_callback : ServerResponse -> Void):HTTPClientRequest;
 	

@@ -1,5 +1,7 @@
 package nodejs.net;
+import js.Error;
 import nodejs.events.EventEmitter;
+import nodejs.net.TCPSocket.NetworkAdress;
 
 /**
  * 
@@ -63,10 +65,42 @@ extern class TCPServer extends EventEmitter
 	function listen(port : Int, hostname : String, backlog : Int, on_listening_callback : Dynamic) : Void;
 	
 	
-	var close				: Dynamic;//	([callback])
-	var address				: Dynamic;//	()
-	var unref				: Dynamic;//	()
-	var ref					: Dynamic;//	()	
-	var getConnections		: Dynamic;//	(callback)
+	/**
+	 * Stops the server from accepting new connections and keeps existing connections. 
+	 * This function is asynchronous, the server is finally closed when all connections are ended and the server emits a 'close' event.
+	 * Optionally, you can pass a callback to listen for the 'close' event.
+	 * @param	p_callback
+	 */
+	@:overload(function():Void { })
+	function close(p_callback:Void->Void):Void;
+	
+	/**
+	 * Returns the bound address, the address family name and port of the server as reported by the operating system.
+	 * Useful to find which port was assigned when giving getting an OS-assigned address. Returns an object with three properties,
+	 * e.g. { port: 12346, family: 'IPv4', address: '127.0.0.1' }
+	 * @return
+	 */
+	function address():NetworkAdress;
+	
+	/**
+	 * Calling unref on a server will allow the program to exit if this is the only active server in the event system. 
+	 * If the server is already unrefd calling unref again will have no effect.
+	 */
+	function unref():Void;
+	
+	/**
+	 * Opposite of unref, calling ref on a previously unrefd server will not let the program exit if it's the only server left (the default behavior). 
+	 * If the server is refd calling ref again will have no effect.
+	 */
+	function ref():Void;
+	
+	/**
+	 * Asynchronously get the number of concurrent connections on the server. Works when sockets were sent to forks.
+	 * Callback should take two arguments err and count.
+	 * net.Server is an EventEmitter with the following events:
+	 * @param	p_callback
+	 */
+	@:overload(function():Int{})
+	function getConnections(p_callback : Error -> Int):Void;
 	
 }

@@ -1,5 +1,6 @@
 package nodejs.net;
 import nodejs.events.EventEmitter;
+import nodejs.stream.Duplex;
 
 
 /**
@@ -107,7 +108,7 @@ extern class TCPSocketOption
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
 @:native("(require('net').Socket)")
-extern class TCPSocket extends EventEmitter
+extern class TCPSocket extends Duplex
 {
 	/**
 	 * Construct a new socket object.
@@ -115,13 +116,26 @@ extern class TCPSocket extends EventEmitter
 	@:overload(function():Void{})
 	function new(p_options : TCPSocketOption):Void;
 	
+	/**
+	 * The string representation of the local IP address the remote client is connecting on. 
+	 * For example, if you are listening on '0.0.0.0' and the client connects on '192.168.1.1', the value would be '192.168.1.1'.
+	 */
+	var localAddress : String;
 	
 	/**
-	 * Returns the bound address, the address family name and port of the socket as reported by the operating system.
-	 * Returns an object with three properties, e.g. { port: 12346, family: 'IPv4', address: '127.0.0.1' }
-	 * @return
+	 * The numeric representation of the local port. For example, 80 or 21.
 	 */
-	function address():NetworkAdress;
+	var localPort : Int;
+	
+	/**
+	 * The amount of received bytes.
+	 */
+	var bytesRead : Int;
+	
+	/**
+	 * The amount of bytes sent.
+	 */
+	var bytesWritten : Int;
 	
 	/**
 	 * The string representation of the remote IP address. For example, '74.125.127.100' or '2001:4860:a005::68'.
@@ -134,6 +148,13 @@ extern class TCPSocket extends EventEmitter
 	var remotePort : Int;
 	
 	/**
+	 * Returns the bound address, the address family name and port of the socket as reported by the operating system.
+	 * Returns an object with three properties, e.g. { port: 12346, family: 'IPv4', address: '127.0.0.1' }
+	 * @return
+	 */
+	function address():NetworkAdress;
+	
+	/**
 	 * net.Socket has the property that socket.write() always works. This is to help users get up and running quickly. 
 	 * The computer cannot always keep up with the amount of data that is written to a socket - the network connection simply might be too slow. 
 	 * Node will internally queue up the data written to a socket and send it out over the wire when it is possible. (Internally it is polling on the socket's file descriptor for being writable).
@@ -143,5 +164,60 @@ extern class TCPSocket extends EventEmitter
 	 * Users who experience large or growing bufferSize should attempt to "throttle" the data flows in their program with pause() and resume().
 	 */
 	var bufferSize : Int;
+	
+	/**
+	 * Opens the connection for a given socket. If port and host are given, then the socket will be opened as a TCP socket, if host is omitted, localhost will be assumed. If a path is given, the socket will be opened as a unix socket to that path.
+	 * Normally this method is not needed, as net.createConnection opens the socket. Use this only if you are implementing a custom Socket.
+	 * This function is asynchronous. When the 'connect' event is emitted the socket is established. If there is a problem connecting, the 'connect' event will not be emitted, the 'error' event will be emitted with the exception.
+	 * The connectListener parameter will be added as an listener for the 'connect' event.
+	 * @param	p_port
+	 * @param	p_host
+	 * @param	p_connectListener
+	 */	
+	@:overload(function(p_path:String, p_connectListener:Dynamic):Void { } )
+	@:overload(function(p_path:String):Void { } )
+	@:overload(function(p_port : Int):Void { } )	
+	@:overload(function(p_port : Int, p_host : String):Void { } )	
+	function connect(p_port : Int, p_host : String, p_connectListener : Dynamic):Void;
+	
+	
+	/**
+	 * Ensures that no more I/O activity happens on this socket. Only necessary in case of errors (parse error or so).
+	 */
+	function destroy():Void;
+	
+	/**
+	 * Pauses the reading of data. That is, 'data' events will not be emitted. Useful to throttle back an upload.
+	 */
+	override function pause():Void;
+	
+	/**
+	 * Sets the socket to timeout after timeout milliseconds of inactivity on the socket. By default net.Socket do not have a timeout.
+	 * When an idle timeout is triggered the socket will receive a 'timeout' event but the connection will not be severed. The user must manually end() or destroy() the socket.
+	 * If timeout is 0, then the existing idle timeout is disabled.
+	 * The optional callback parameter will be added as a one time listener for the 'timeout' event.
+	 * @param	p_timeout
+	 * @param	p_callback
+	 */
+	@:overload(function(p_timeout:Int):Void{})
+	function setTimeout(p_timeout:Int, p_callback:Void->Void):Void;
+		
+	/**
+	 * Disables the Nagle algorithm. By default TCP connections use the Nagle algorithm, they buffer data before sending it off. Setting true for noDelay will immediately fire off data each time socket.write() is called. noDelay defaults to true.
+	 * @param	p_nodelay
+	 */
+	@:overload(function():Void { } )
+	function setNoDelay(p_nodelay:Bool):Void;
+	
+	/**
+	 * Enable/disable keep-alive functionality, and optionally set the initial delay before the first keepalive probe is sent on an idle socket. enable defaults to false.
+	 * Set initialDelay (in milliseconds) to set the delay between the last data packet received and the first keepalive probe. 
+	 * Setting 0 for initialDelay will leave the value unchanged from the default (or previous) setting. Defaults to 0.
+	 * @param	p_enable
+	 * @param	p_initialDelay
+	 */
+	@:overload(function():Void { } )
+	@:overload(function(p_enable : Bool):Void { } )	
+	function setKeepAlive(p_enable : Bool, p_initialDelay:Int):Void;
 	
 }

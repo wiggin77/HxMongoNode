@@ -1,4 +1,5 @@
 package nodejs.http;
+import nodejs.http.HTTP.HTTPRequestOptions;
 import nodejs.net.TCPSocket;
 import nodejs.NodeJS;
 import js.html.ArrayBufferView;
@@ -27,10 +28,25 @@ extern class HTTPS
 	@:overload(function():HTTPSServer { } )	
 	static function createServer(listener : IncomingMessage -> ServerResponse -> Void):HTTPSServer;
 	
-	/*
-	request(options, callback)
-	get(options, callback)
-	//*/  
+	/**
+	 * Node maintains several connections per server to make HTTP requests. This function allows one to transparently issue requests.
+	 * @param	p_options
+	 * @param	p_callback
+	 */
+	@:overload(function(p_options:String, p_callback : ServerResponse -> Void):HTTPClientRequest { } )
+	@:overload(function(p_options:String):HTTPClientRequest{})
+	@:overload(function(p_options:HTTPRequestOptions):HTTPClientRequest{})
+	static function request(p_options : HTTPRequestOptions, p_callback : ServerResponse -> Void):HTTPClientRequest;
+	
+	/**
+	 * Since most requests are GET requests without bodies, Node provides this convenience method. The only difference between this method and http.request() is that it sets the method to GET and calls req.end() automatically.
+	 * @param	p_options
+	 * @param	p_callback
+	 */
+	@:overload(function(p_options:String, p_callback : ServerResponse -> Void):HTTPClientRequest { } )
+	@:overload(function(p_options:String):HTTPClientRequest{})
+	@:overload(function (p_options : HTTPRequestOptions):HTTPClientRequest{})
+	static function get(p_options : HTTPRequestOptions, p_callback : ServerResponse -> Void):HTTPClientRequest; 
 	
 	
 }
