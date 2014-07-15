@@ -64,6 +64,8 @@ import nodejs.stream.Writable;
 import nodejs.tls.CleartextStream;
 import nodejs.tls.CryptoStream;
 import nodejs.tls.SecurePair;
+import nodejs.ws.WebSocket;
+import nodejs.ws.WebSocketServer;
 import nodejs.ZLib;
 
 
@@ -79,7 +81,16 @@ class Main
 	static function main():Void 
 	{ 	
 		
-		
+		trace("Listening @ 3000");
+		var wss : WebSocketServer = new WebSocketServer( cast { port:3000 } );
+		wss.on(WebSocketServerEventType.Connection, function(p_ws : WebSocket):Void
+		{
+			p_ws.on(WebSocketEventType.Message, function(p_data : Dynamic):Void
+			{
+				trace("WS> " + p_data);
+			});
+			p_ws.send("Server ACK");
+		});
 	}
 	
 	

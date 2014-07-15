@@ -33,4 +33,5 @@ Probably there will be missing commands and methods.
   * `express`
   * `cookies`
   * `authom` (Google, Facebook and others authentication methods)
+  * `ws`
 
