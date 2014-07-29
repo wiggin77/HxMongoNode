@@ -228,4 +228,9 @@ extern class Process extends EventEmitter
 	@:overload(function(p_id:Int):Void{})
 	function kill(p_pid:Int, p_signal:String):Void;
 	
+	/**
+	 * Returns an object describing the memory usage of the Node process measured in bytes. 
+	 */
+	function memoryUsage():Dynamic;
+	
 }
