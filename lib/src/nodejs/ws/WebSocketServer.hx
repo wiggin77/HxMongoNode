@@ -55,6 +55,8 @@ extern class WebSocketServerOption
 extern class WebSocketServer extends EventEmitter
 {
 
+	public var clients : Array<WebSocket>;
+
 	/**
 	 * Construct a new server object.
 	 * Either port or server must be provided, otherwise you might enable noServer if you want to pass the requests directly.
