@@ -138,7 +138,10 @@ extern class WebSocket extends EventEmitter
 	 */
 	var supports : Dynamic;
 
-
+	/**
+	 * upgradeReq is the original request object
+	 */
+	var upgradeReq : IncomingMessage;
 	
 	/**
 	 * Creates a new WebSocket.
