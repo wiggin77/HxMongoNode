@@ -18,6 +18,8 @@ import nodejs.express.Application;
 import nodejs.express.Express;
 import nodejs.express.ExpressRequest;
 import nodejs.express.ExpressResponse;
+import nodejs.gm.GM;
+import nodejs.haxe.io.Directory;
 import nodejs.http.HTTP;
 import nodejs.fs.File;
 import nodejs.http.HTTPClientRequest;
@@ -80,7 +82,7 @@ class Main
 	
 	static function main():Void 
 	{ 	
-		
+		/*
 		trace("Listening @ 3000");
 		var wss : WebSocketServer = new WebSocketServer( cast { port:3000 } );
 		wss.on(WebSocketServerEventType.Connection, function(p_ws : WebSocket):Void
@@ -91,6 +93,8 @@ class Main
 			});
 			p_ws.send("Server ACK");
 		});
+		//*/
+		
 	}
 	
 	

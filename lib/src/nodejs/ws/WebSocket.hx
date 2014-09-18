@@ -1,6 +1,7 @@
 package nodejs.ws;
 import js.Error;
 import nodejs.events.EventEmitter;
+import nodejs.http.IncomingMessage;
 
 class WebSocketEventType
 {
