@@ -34,4 +34,5 @@ Probably there will be missing commands and methods.
   * `cookies`
   * `authom` (Google, Facebook and others authentication methods)
   * `ws`
+  * `gm` (GraphicsMagick for image processing)
 
