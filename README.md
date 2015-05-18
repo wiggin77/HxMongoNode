@@ -1,6 +1,8 @@
-[<img src="http://media.mongodb.org/logo-mongodb-header.png" alt="MongoDB logo">](http://www.mongodb.org)
-[<img src="http://haxe.org/img/haxe-logo-horizontal.svg" alt="Haxe logo" width="140">](http://haxe.org)
+[<img src="http://www.mongodb.com/sites/mongodb.com/files/media/mongodb-logo-rgb.jpeg" alt="MongoDB logo">](http://www.mongodb.org)
+
 [<img src="http://nodejs.org/images/logos/nodejs.png" alt="nodejs logo">](http://nodejs.org/images/logos/nodejs.png)
+
+[<img src="http://haxe.org/img/haxe-logo-horizontal.svg" alt="Haxe logo" width="140">](http://haxe.org)
 
 # Haxe MongoDB for node.js
 
