@@ -1,21 +1,16 @@
-![](http://i.imgur.com/gsd2DdK.png)
-# Haxe NodeJS
+![][<img src="https://www.mongodb.org/" alt="MongoDB logo">](http://www.mongodb.org)[<img src="http://haxe.org/img/haxe-logo-horizontal.svg" alt="Haxe logo" width="140">](http://haxe.org)[<img src="https://nodejs.org/images/logos/nodejs.png" alt="nodejs logo">](https://nodejs.org/images/logos/nodejs.png)
+# Haxe MongoDB for node.js
 
 ### Overview
 
-Extern classes for nodejs.  
-They follow the canonic names found in the **[API](http://nodejs.org/api/index.html)**.  
-Some classes (like `URL`) have some features better grouped.  
-Probably there will be missing commands and methods.  
-
- **I'm doing this library as helper for my main projects so it will evolve according to my needs**
+Extern classes for MongoDB nodejs driver.  
 
 ### Installation
 
 * Install **[FlashDevelop](http://www.flashdevelop.org/community/viewforum.php?f=11) (not obligatory)**
 * Install and make available in the command line **[NodeJS](http://nodejs.org/)**
 * Create a Javascript project.
-* Run `haxelib install nodehx`
+* Run `haxelib install hxmongodb` (once this has been added to haxelib)
 
 ### Build and Run
 
@@ -25,14 +20,5 @@ Probably there will be missing commands and methods.
  
 ### Dependencies
 
-* Some packages needs `NPM` manager: **(remember to install them)**
+* This package needs `NPM` manager: **(remember to install)**
   * `mongodb`
-  * `peerjs-server`
-  * `nodewebkit`
-  * `multiparty` (upload support for webservices)
-  * `express`
-  * `cookies`
-  * `authom` (Google, Facebook and others authentication methods)
-  * `ws`
-  * `gm` (GraphicsMagick for image processing)
-

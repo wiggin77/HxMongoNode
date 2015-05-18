@@ -7,4 +7,7 @@ Clear.bat
 Submit.bat
 PackLib.bat
 InstallLocal.bat
+*.sublime-project
+*.sublime-workspace
+
 
