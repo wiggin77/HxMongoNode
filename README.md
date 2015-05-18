@@ -1,4 +1,4 @@
-![][<img src="https://www.mongodb.org/" alt="MongoDB logo">](http://www.mongodb.org)[<img src="http://haxe.org/img/haxe-logo-horizontal.svg" alt="Haxe logo" width="140">](http://haxe.org)[<img src="https://nodejs.org/images/logos/nodejs.png" alt="nodejs logo">](https://nodejs.org/images/logos/nodejs.png)
+![<img src="http://www.mongodb.org/" alt="MongoDB logo">](http://www.mongodb.org)[<img src="http://haxe.org/img/haxe-logo-horizontal.svg" alt="Haxe logo" width="140">](http://haxe.org)[<img src="http://nodejs.org/images/logos/nodejs.png" alt="nodejs logo">](http://nodejs.org/images/logos/nodejs.png)
 # Haxe MongoDB for node.js
 
 ### Overview
