@@ -5,7 +5,7 @@ import js.node.mongodb.MongoOption.MongoCursorOption;
  * ...
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').Cursor)")
+@:jsRequire("mongodb", "Cursor")
 extern class MongoCursor
 {
 	/**

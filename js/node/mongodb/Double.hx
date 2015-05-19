@@ -4,7 +4,7 @@ package js.node.mongodb;
  * A class representation of the BSON Double type.
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').Double)")
+@:jsRequire("mongodb", "Double")
 extern class Double
 {
 	

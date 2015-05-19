@@ -5,7 +5,7 @@ import js.node.mongodb.ObjectID.ObjectIDInternal;
  * Native ObjectID instance.
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("require('mongodb').ObjectID")
+@:jsRequire("mongodb", "ObjectID")
 extern class ObjectID
 {
 	

@@ -4,7 +4,7 @@ package js.node.mongodb;
  * A class representation of the BSON Symbol type.
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').Symbol)")
+@:jsRequire("mongodb", "Symbol")
 extern class Symbol
 {
 	

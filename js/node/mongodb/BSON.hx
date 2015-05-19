@@ -14,7 +14,7 @@ import js.node.mongodb.MongoOption.BSONOption;
  * http://http://bsonspec.org/
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').BSON)")
+@:jsRequire("mongodb", "BSON")
 extern class BSON
 {
 	/**

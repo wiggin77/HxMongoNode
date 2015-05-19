@@ -7,7 +7,7 @@ import js.node.mongodb.MongoOption.MongoServerOption;
  * Set of Replica Servers.
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("require('mongodb').ReplSetServers")
+@:jsRequire("mongodb", "ReplSetServers")
 extern class ReplSetServers
 {
 

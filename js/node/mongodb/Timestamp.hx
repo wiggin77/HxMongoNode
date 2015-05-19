@@ -4,7 +4,7 @@ package js.node.mongodb;
  * Defines a Timestamp class for representing a 64-bit two’s-complement integer value, which faithfully simulates the behavior of a Java “Timestamp”. This implementation is derived from TimestampLib in GWT.
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').Timestamp)")
+@:jsRequire("mongodb", "Timestamp")
 extern class Timestamp
 {
 	

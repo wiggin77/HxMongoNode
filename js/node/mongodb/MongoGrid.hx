@@ -4,7 +4,7 @@ package js.node.mongodb;
  * A class representation of a simple Grid interface.
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("require('mongodb').Grid")
+@:jsRequire("mongodb", "Grid")
 extern class MongoGrid
 {
 	

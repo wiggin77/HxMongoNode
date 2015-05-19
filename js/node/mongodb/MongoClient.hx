@@ -1,8 +1,6 @@
 package js.node.mongodb;
 import js.Error;
 import js.node.events.EventEmitter;
-import js.node.NodeJS;
-import js.html.Float32Array;
 import js.node.mongodb.MongoDatabase;
 import js.node.mongodb.MongoOption.MongoOption;
 import js.node.mongodb.MongoOption.MongoServerOption;
@@ -10,8 +8,8 @@ import js.node.mongodb.MongoOption.MongoServerOption;
 /**
  * 
  */
-@:native("(require('mongodb').MongoClient)")
-extern class MongoClient extends EventEmitter
+@:jsRequire("mongodb", "MongoClient")
+extern class MongoClient extends EventEmitter<MongoClient>
 {
 	/**
 	 * Creates a new MongoClient instance.

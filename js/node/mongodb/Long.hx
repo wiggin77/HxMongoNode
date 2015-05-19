@@ -4,7 +4,7 @@ package js.node.mongodb;
  * Defines a Long class for representing a 64-bit two’s-complement integer value, which faithfully simulates the behavior of a Java “Long”. This implementation is derived from LongLib in GWT.
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').Long)")
+@:jsRequire("mongodb", "Long")
 extern class Long
 {
 	

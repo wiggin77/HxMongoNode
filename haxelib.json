@@ -1,0 +1,10 @@
+{
+    "name": "hxmongodb",
+    "url": "https://github.com/wiggin77/hxmongodb.git",
+    "description": "Extern definitions for MongoDB node.js driver",
+    "license": "MIT",
+    "version": "0.1.0",
+    "releasenote": "Initial release for MongoDB node.js driver v2.0",
+    "contributors": ["eduardo-costa","wiggin77"],
+    "tags": ["mongodb", "nodejs"]
+}

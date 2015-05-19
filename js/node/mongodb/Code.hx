@@ -4,7 +4,7 @@ package js.node.mongodb;
  * A class representation of the BSON Code type.
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').Code)")
+@:jsRequire("mongodb", "Code")
 extern class Code
 {
 	

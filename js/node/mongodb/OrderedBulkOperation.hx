@@ -4,7 +4,7 @@ package js.node.mongodb;
  * ...
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').OrderedBulkOperation)")
+@:jsRequire("mongodb", "OrderedBulkOperation")
 extern class OrderedBulkOperation
 {
 	

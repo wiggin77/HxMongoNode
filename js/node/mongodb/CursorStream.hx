@@ -24,8 +24,8 @@ class CursorStreamEvent
  * Stream interface for a cursor.
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').CursorStream)")
-extern class CursorStream extends EventEmitter
+@:jsRequire("mongodb", "CursorStream")
+extern class CursorStream extends EventEmitter<CursorStream>
 {
 	
 	/**

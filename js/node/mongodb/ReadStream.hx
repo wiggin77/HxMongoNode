@@ -28,8 +28,8 @@ class ReadStreamEvent
  * Stream interface for a file.
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').ReadStream)")
-extern class ReadStream extends EventEmitter
+@:jsRequire("mongodb", "ReadStream")
+extern class ReadStream extends EventEmitter<ReadStream>
 {
 	
 	/**

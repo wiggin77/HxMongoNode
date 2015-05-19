@@ -15,8 +15,8 @@ import js.node.mongodb.MongoOption.MongoUserOption;
  * ...
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("require('mongodb').Db")
-extern class MongoDatabase extends EventEmitter
+@:jsRequire("mongodb", "Db")
+extern class MongoDatabase extends EventEmitter<MongoDatabase>
 {
 	/**
 	 * ‘mongodb://localhost:27017/default’	Default URL

@@ -6,7 +6,7 @@ import js.node.mongodb.MongoOption.MongoCollectionOption;
  * ...
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').Collection)")
+@:jsRequire("mongodb", "Collection")
 extern class MongoCollection
 {
 	

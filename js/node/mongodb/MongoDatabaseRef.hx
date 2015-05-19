@@ -4,7 +4,7 @@ package js.node.mongodb;
  * A class representation of the BSON DBRef type.
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').DBRef)")
+@:jsRequire("mongodb", "DBRef")
 extern class MongoDatabaseRef
 {
 

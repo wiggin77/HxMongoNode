@@ -6,7 +6,7 @@ import js.node.mongodb.MongoOption.MongoMongosOption;
  * Mongos constructor provides a connection to a mongos proxy including failover to additional servers
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("require('mongodb').Mongos")
+@:jsRequire("mongodb", "Mongos")
 extern class Mongos
 {
 

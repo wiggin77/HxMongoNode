@@ -4,7 +4,7 @@ package js.node.mongodb;
  * A class representation of the Read Preference.
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').ReadPreference)")
+@:jsRequire("mongodb", "ReadPreference")
 extern class ReadPreference
 {
 	/**

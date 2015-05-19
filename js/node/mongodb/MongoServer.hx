@@ -11,7 +11,7 @@ import js.node.mongodb.MongoOption.MongoServerOption;
  * Class representing a single MongoDB Server connection
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("require('mongodb').Server")
+@:jsRequire("mongodb", "Server")
 extern class MongoServer
 {
 	

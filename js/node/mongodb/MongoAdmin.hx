@@ -4,7 +4,7 @@ package js.node.mongodb;
  * Allows the user to access the admin functionality of MongoDB
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("require('mongodb').Admin")
+@:jsRequire("mongodb", "Admin")
 extern class MongoAdmin
 {
 	var buildInfo			: Dynamic;

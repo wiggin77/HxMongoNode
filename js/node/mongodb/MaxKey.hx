@@ -4,7 +4,7 @@ package js.node.mongodb;
  * A class representation of the BSON MaxKey type
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').MaxKey)")
+@:jsRequire("mongodb", "MaxKey")
 extern class MaxKey
 {
 	

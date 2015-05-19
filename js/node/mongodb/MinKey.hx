@@ -4,7 +4,7 @@ package js.node.mongodb;
  * A class representation of the BSON MinKey type
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').MinKey)")
+@:jsRequire("mongodb", "MinKey")
 extern class MinKey
 {
 	

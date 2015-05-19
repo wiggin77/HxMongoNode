@@ -5,7 +5,7 @@ import js.node.Buffer;
  * A class representation of the BSON Binary type.
  * @author Eduardo Pons - eduardo@thelaborat.org
  */
-@:native("(require('mongodb').Binary)")
+@:jsRequire("mongodb", "Binary")
 extern class Binary
 {
 	
