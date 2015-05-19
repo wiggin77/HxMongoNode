@@ -1,5 +1,5 @@
 package js.node.mongodb;
-import js.node.http.HTTPServer;
+import js.node.http.Server;
 import js.node.mongodb.MongoOption.MongoReplSetOption;
 import js.node.mongodb.MongoOption.MongoServerOption;
 
@@ -14,8 +14,8 @@ extern class ReplSetServers
 	/**
 	 * ReplSet constructor provides replicaset functionality
 	 */
-	@:overload(function(p_list:Array<HTTPServer>):Void{})
-	function new(p_list : Array<HTTPServer>,p_option:MongoReplSetOption);
+	@:overload(function(p_list:Array<Server>):Void{})
+	function new(p_list : Array<Server>,p_option:MongoReplSetOption);
 	
 	/**
 	 * Creates a new server for the <code>replset</code> based on <code>host</code>.
@@ -23,5 +23,5 @@ extern class ReplSetServers
 	 * @param	p_replset
 	 * @return
 	 */
-	function createServer(p_host : String,p_replset : ReplSetServers):HTTPServer;
+	function createServer(p_host : String,p_replset : ReplSetServers):Server;
 }

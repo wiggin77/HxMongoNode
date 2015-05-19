@@ -37,6 +37,7 @@ Extern classes for MongoDB nodejs driver.
 * [Install MongoDB](http://docs.mongodb.org/manual/installation/).
 * Edit `src/com/dal/mongotest/MongoTest.hx` with your server domain and user credentials.
 * Run `haxelib git hxnodejs https://github.com/HaxeFoundation/hxnodejs.git master`
+* Run `haxelib install promhx`
 * Make sure you have the necessary compilers. e.g. For Ubuntu: `sudo apt-get install build-essential`
 * Within "test/build" directory run `npm install` to fetch and build native MongoDB driver for node.js
 * Run `haxe build.hxml`

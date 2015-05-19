@@ -1,5 +1,7 @@
 -cp test/src
 -lib hxnodejs
--main com.dal.mongotest.MongoTest
+-lib promhx
+--macro include('js.node.mongodb')
+-main TestMain
 -js test/build/main.js
 

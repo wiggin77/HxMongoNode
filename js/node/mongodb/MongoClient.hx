@@ -21,8 +21,8 @@ extern class MongoClient extends EventEmitter<MongoClient>
 	 * Connect to MongoDB using a url as documented at
 	 * docs.mongodb.org/manual/reference/connection-string/ 
 	 */	
-	@:overload(function(p_url:String, p_callback:Error->MongoDatabase-> Void):Void { } )		
-	static function connect(p_url:String, p_options:MongoOption, p_callback:Error->MongoDatabase-> Void):Void;
+	@:overload(function(p_url:String, p_callback:Error->MongoDatabase->Void):Void { } )		
+	static function connect(p_url:String, p_options:MongoOption, p_callback:Error->MongoDatabase->Void):Void;
 	
 	
 	
@@ -33,7 +33,7 @@ extern class MongoClient extends EventEmitter<MongoClient>
 	 * @param	p_options
 	 * @param	p_callback
 	 */
-	@:overload(function(p_url:String, p_callback:Error->MongoDatabase-> Void):Void { } )	
+	@:overload(function(p_url:String, p_callback:Error->MongoDatabase->Void):Void { } )	
 	@:native("connect")
 	function Connect(p_url:String, p_options:MongoOption, p_callback:Error->MongoDatabase-> Void):Void;
 	
@@ -41,7 +41,7 @@ extern class MongoClient extends EventEmitter<MongoClient>
 	 * Initialize the database connection.
 	 * @param	p_callback
 	 */
-	function open(p_callback:Error->MongoDatabase-> Void):Void;
+	function open(p_callback:Error->MongoDatabase->Void):Void;
 	
 	/**
 	 * Close the current db connection, including all the child db instances. Emits close event if no callback is provided.
