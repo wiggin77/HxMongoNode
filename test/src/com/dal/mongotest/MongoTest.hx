@@ -24,7 +24,7 @@ class MongoTest
 		m_strUsername = "testUser";
 		m_strPassword = "test";
 
-		m_strDBDomain = "192.168.1.83";
+		m_strDBDomain = "localhost";
 		m_strDBPort = "27017";
 		m_strDatabase = "test";
 	}
