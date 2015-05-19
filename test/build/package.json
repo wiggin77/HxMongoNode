@@ -1,0 +1,11 @@
+{
+  "name": "MongoDBTest",
+  "version": "0.0.1",
+  "description": "My test MongoDB app",
+  "main": "main.js",
+  "author": "wiggin77",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "mongodb": "~2.0.32"
+  }
+}

@@ -31,3 +31,12 @@ Extern classes for MongoDB nodejs driver.
 ### QuickStart
 
 [MongoDB driver quickstart guide](http://mongodb.github.io/node-mongodb-native/2.0/)
+
+### Test app
+
+* [Install MongoDB](http://docs.mongodb.org/manual/installation/).
+* Edit `src/com/dal/mongotest/MongoTest.hx` with your server domain and user credentials.
+* Run `haxelib git hxnodejs https://github.com/HaxeFoundation/hxnodejs.git master`
+* Within "test/build" directory run `npm install` to fetch and build native MongoDB driver for node.js
+* Run `haxe build.hxml`
+* From the "test/build" directory run `node main.js`

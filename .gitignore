@@ -1,2 +1,5 @@
 *.sublime-project
 *.sublime-workspace
+
+main.js
+node_modules

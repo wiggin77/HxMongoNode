@@ -1,0 +1,5 @@
+-cp test/src
+-lib hxnodejs
+-main com.dal.mongotest.MongoTest
+-js test/build/main.js
+
