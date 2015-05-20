@@ -1,5 +1,8 @@
 package js.node.mongodb;
 
+import haxe.extern.EitherType;
+import js.node.mongodb.ReadPreference;
+
 
 /**
  * Class that implements a listener for log events of a MongoServer.
@@ -442,7 +445,7 @@ class MongoAuthOption
 /**
  * 
  */
-extern class MongoUserOption
+extern class MongoAddUserOption
 {
 	/**
 	 * {Number/String, > -1 || ‘majority’ || tag name} the write concern for the operation where &lt; 1 is no acknowledgement of write and w >= 1, w = ‘majority’ or tag acknowledges the write
@@ -468,6 +471,29 @@ extern class MongoUserOption
 	 * (Array, default:[]) roles associated with the created user (only Mongodb 2.6 or higher)
 	 */
 	var roles		: Array<Dynamic>;	
+}
+
+/**
+ * 
+ */
+extern class MongoRemoveUserOption
+{
+	/**
+	 * {Number/String, > -1 || ‘majority’ || tag name} the write concern for the operation where &lt; 1 is no acknowledgement of write and w >= 1, w = ‘majority’ or tag acknowledges the write
+	 */
+	var w 			: Dynamic;			
+	/**
+	 * {Number, 0} set the timeout for waiting for write concern to finish (combines with w option)
+	 */
+	var wtimeout 	: Int;				
+	/**
+	 * (Boolean, default:false) write waits for fsync before returning, from MongoDB 2.6 on, fsync cannot be combined with journal
+	 */
+	var fsync		: Bool;				
+	/**
+	 * (Boolean, default:false) write waits for journal sync before returning
+	 */
+	var j			: Bool;				
 }
 
 /**
@@ -740,7 +766,7 @@ extern class MongoCommandOption
 	/**
 	 * {String}, the preferred read preference (ReadPreference.PRIMARY, ReadPreference.PRIMARY_PREFERRED, ReadPreference.SECONDARY, ReadPreference.SECONDARY_PREFERRED, ReadPreference.NEAREST).
 	 */
-	var readPreference 			:String;
+	var readPreference 			:EitherType<String,ReadPreference>;
 	/**
 	 * {Number}, number of milliseconds to wait before aborting the query.
 	 */
@@ -748,15 +774,15 @@ extern class MongoCommandOption
 	/**
 	 * {Boolean}, overrides the default redirection of certain commands to primary.
 	 */
-	var ignoreCommandFilter 	:Bool;	
+	//var ignoreCommandFilter 	:Bool;	
 	/**
 	 * {Boolean, default: false}, signals this is a write command and to ignore read preferences
 	 */
-	var writeCommand 			:Bool;	
+	//var writeCommand 			:Bool;	
 	/**
 	 * {Boolean, default: false }, overrides the default not to check the key names for the command
 	 */
-	var checkKeys 				:Bool;	
+	//var checkKeys 				:Bool;	
 }
 
 /**

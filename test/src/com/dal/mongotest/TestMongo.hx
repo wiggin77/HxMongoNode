@@ -6,6 +6,7 @@ import js.node.mongodb.MongoCursor;
 import js.node.mongodb.MongoDatabase;
 import com.dal.common.unit.TestCase;
 import com.dal.common.unit.AsyncNotify;
+import js.node.mongodb.MongoError;
 
 class TestMongo extends TestCase
 {
@@ -31,7 +32,7 @@ class TestMongo extends TestCase
 		
 	}
 
-	private function onConnect(err:js.Error, db:MongoDatabase) : Void
+	private function onConnect(err:MongoError, db:MongoDatabase) : Void
 	{
 		if(err == null)
 		{
@@ -49,7 +50,7 @@ class TestMongo extends TestCase
 		}
 	}
 
-	private function onInsert(err:js.Error, result:Dynamic, db:MongoDatabase) : Void
+	private function onInsert(err:MongoError, result:Dynamic, db:MongoDatabase) : Void
 	{
 		onResult("insert", err, result);
 
@@ -60,7 +61,7 @@ class TestMongo extends TestCase
 		collection.update({a:2}, {"$set":{b:1}}, function(err,result){onUpdate(err,result,db); });
 	}
 
-	private function onUpdate(err:js.Error, result:Dynamic, db:MongoDatabase) : Void
+	private function onUpdate(err:MongoError, result:Dynamic, db:MongoDatabase) : Void
 	{
 		onResult("update", err, result);
 
@@ -71,7 +72,7 @@ class TestMongo extends TestCase
 		collection.remove({a:3}, function(err,result){onRemove(err,result,db);});
 	}
 
-	private function onRemove(err:js.Error, result:Dynamic, db:MongoDatabase) : Void
+	private function onRemove(err:MongoError, result:Dynamic, db:MongoDatabase) : Void
 	{
 		onResult("remove", err, result);
 
@@ -82,7 +83,7 @@ class TestMongo extends TestCase
 		var cursor:MongoCursor = collection.find({});
 
 		cursor.count(false, null, function(err,count){trace("Found " + count + " documents.");});
-		cursor.toArray(function(err,docs){trace(docs); doClose(db);});
+		cursor.toArray(function(err,docs){assertNotNull(docs); doClose(db);});
 	}
 
 	private function doClose(db:MongoDatabase) : Void
@@ -90,7 +91,7 @@ class TestMongo extends TestCase
 		db.close(function(err,result){onClose(err, result);});
 	}
 
-	private function onClose(err:js.Error, result:Dynamic) : Void
+	private function onClose(err:MongoError, result:Dynamic) : Void
 	{
 		onResult("remove", err, result);
 		
@@ -99,7 +100,7 @@ class TestMongo extends TestCase
 		m_an.done();
 	}
 
-	private function onResult(action:String, err:js.Error, result:Dynamic) : Void
+	private function onResult(action:String, err:MongoError, result:Dynamic) : Void
 	{
 		trace(err == null ? action + " success" : action + " error:" + err);
 	}

@@ -196,25 +196,13 @@ class TestRunner
 	public function run() : Promise<TestResult>
 	{
 		// Create a new test context for this run instance.
-		var bDone = false;
 		var result = new TestResult();
 		var deferred = new Deferred<TestResult>();
 		var promise = deferred.promise();
 		var it = m_listCases.iterator();
 		var tcc:TestCaseContext = { "deferred":deferred, "it":it, "result":result };
 
-		promise.then(function(tr) { bDone = true; } );
-
 		Timer.delay(function() { runNextCase(tcc); }, 10);
-
-		// Don't let the main thread exit until all tests are complete, 
-		// otherwise it will kill the process before the tests get run.
-		//#if sys
-		//	while(!abDone.get())
-		//	{
-		//		ThreadUtil.sleep(500);
-		//	}
-		//#end
 
 		return promise;
 	}
@@ -333,12 +321,12 @@ class TestRunner
 			var method = Reflect.field(rmc.tc, strMethod);
 			if (bAsync)
 			{
-				var an = new AsyncNotify(deferred, rmc.tc);
-				args.push(an);
-				Reflect.callMethod(rmc.tc, method, args);
 				// If method takes too long, it might be because 
 				// a call to AsyncNotify.done() is missing. 
-				Timer.delay(function() { onMethodTimeout(deferred, rmc); }, AsyncNotify.getTimeout());
+				var timer = Timer.delay(function() { onMethodTimeout(deferred, rmc); }, AsyncNotify.getTimeout());
+				var an = new AsyncNotify(deferred, rmc.tc, timer);
+				args.push(an);
+				Reflect.callMethod(rmc.tc, method, args);
 			}
 			else
 			{
@@ -369,7 +357,7 @@ class TestRunner
 
 	/**
 	 * Called when a single test method is finished.
-	 * @param 	deferred - the deferred used to single when the test method is finished.
+	 * @param 	deferred - the deferred used to signal when the test method is finished.
 	 * @param	rmc - run method context containing iterator of method names.
 	 */
 	private function onMethodComplete(deferred:Deferred<Bool>, rmc:RunMethodContext) : Void

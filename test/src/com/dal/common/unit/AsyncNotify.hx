@@ -22,6 +22,7 @@
 package com.dal.common.unit;
 
 import com.dal.common.unit.TestCase;
+import haxe.Timer;
 import promhx.Deferred;
 import promhx.Promise;
 
@@ -51,12 +52,19 @@ class AsyncNotify
 	private var 						m_tc:TestCase;
 
 	/**
+	 * The Timer used to timeout an async call that sos taking too long.
+	 * We need this so it can be cancelled on successful completion.
+	 */
+	private var 						m_timer:Timer;
+
+	/**
 	 * Constructor
 	 * @param	deferred - used to signal the test runner when the test is complete.
 	 * @param	tc - the TestCase currently being run.
+	 * @param	timer - the Timer used to timeout a async call that is taking too long.
 	 */
 	@:allow(com.dal.common.unit)
-	function new(deferred:Deferred<Bool>, tc:TestCase) 
+	function new(deferred:Deferred<Bool>, tc:TestCase, timer:Timer) 
 	{
 		if(deferred == null)
 			throw "deferred cannot be null";
@@ -67,6 +75,7 @@ class AsyncNotify
 		m_deferred = deferred;
 		m_prom = deferred.promise();
 		m_tc = tc;
+		m_timer = timer;
 	}
 
 	/**
@@ -108,6 +117,12 @@ class AsyncNotify
 		else
 		{
 			trace("warning -- Async.done() called more than once, or already timed out.");
+		}
+
+		if(m_timer != null)
+		{
+			m_timer.stop();
+			m_timer = null;
 		}
 	}
 

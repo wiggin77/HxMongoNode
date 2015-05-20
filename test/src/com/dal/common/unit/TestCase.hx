@@ -87,6 +87,7 @@ class TestCase #if mt_build implements mt.Protect #end
 			{
 				currentTest.backtrace = haxe.CallStack.toString(haxe.CallStack.exceptionStack());
 			}
+			throw currentTest.error;
 		}
 	}
 
@@ -111,6 +112,7 @@ class TestCase #if mt_build implements mt.Protect #end
 			{
 				currentTest.backtrace = haxe.CallStack.toString(haxe.CallStack.exceptionStack());
 			}
+			throw currentTest.error;
 		}
 	}
 
@@ -136,6 +138,55 @@ class TestCase #if mt_build implements mt.Protect #end
 			{
 				currentTest.backtrace = haxe.CallStack.toString(haxe.CallStack.exceptionStack());
 			}
+			throw currentTest.error;
+		}
+	}
+
+	/**
+	 * Asserts that the specified value is not null.
+	 * @param	val - the value to check.
+	 */
+	public function assertNotNull<T>(val:T, ?c:PosInfos) : Void 	
+	{
+		currentTest.done = true;
+		if (val == null && currentTest.success != false)
+		{
+			currentTest.success = false;
+			currentTest.error   = "expected non-null, got null";
+			currentTest.posInfos = c;
+			try
+			{
+				throw currentTest;
+			}
+			catch ( e : TestStatus )
+			{
+				currentTest.backtrace = haxe.CallStack.toString(haxe.CallStack.exceptionStack());
+			}
+			throw currentTest.error;
+		}
+	}
+
+	/**
+	 * Asserts that the specified value is null.
+	 * @param	val - the value to check.
+	 */
+	public function assertNull<T>(val:T, ?c:PosInfos) : Void 	
+	{
+		currentTest.done = true;
+		if (val != null && currentTest.success != false)
+		{
+			currentTest.success = false;
+			currentTest.error   = "expected null, got " + val;
+			currentTest.posInfos = c;
+			try
+			{
+				throw currentTest;
+			}
+			catch ( e : TestStatus )
+			{
+				currentTest.backtrace = haxe.CallStack.toString(haxe.CallStack.exceptionStack());
+			}
+			throw currentTest.error;
 		}
 	}
 

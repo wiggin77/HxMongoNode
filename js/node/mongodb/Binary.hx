@@ -1,9 +1,9 @@
 package js.node.mongodb;
+import haxe.extern.EitherType;
 import js.node.Buffer;
 
 /**
  * A class representation of the BSON Binary type.
- * @author Eduardo Pons - eduardo@thelaborat.org
  */
 @:jsRequire("mongodb", "Binary")
 extern class Binary
@@ -43,40 +43,38 @@ extern class Binary
 	 * 128	User BSON type
 	 */
 	static var SUBTYPE_USER_DEFINED		:Int; 
+
+	/**
+	 * The length of the binary.
+	 * @return Int
+	 */
+	function length() : Int;
 	
 	/**
 	 * Updates this binary with byte_value.
-	 * @param	p_char
+	 * @param	byte_value - a single byte we wish to write.
 	 */
-	function put(p_char:Int):Void;
+	function put(byte_value:EitherType<String,Int>) : Void;
 	
 	/**
 	 * Writes a buffer or string to the binary.
-	 * @param	p_string
-	 * @param	p_offset
+	 * @param	position - read from the given position in the Binary.
+	 * @param	length - the number of bytes to read.
+	 * @return js.node.Buffer
 	 */
-	function write(p_string:String, p_offset:Int):Void;
-	
-	
-	/**
-	 * Writes a buffer or string to the binary.
-	 * @param	p_position
-	 * @param	p_length
-	 * @return
-	 */
-	function read(p_position:Int, p_length:Int):Buffer;
+	function read(position:Int, length:Int) : Buffer;
 	
 	/**
 	 * Returns the value of this binary as a string.
-	 * @return
+	 * @return String
 	 */
-	function value():String;
+	function value() : String;
 	
 	/**
-	 * The length of the binary.
-	 * @return
+	 * Writes a buffer or string to the binary.
+	 * @param	value - a string or buffer to be written to the Binary BSON object.
+	 * @param	offset - specify where to write the content.
 	 */
-	function length():Int;
+	function write(value:EitherType<String,Buffer>, offset:Int):Void;
 	
-	
-}
+} // End of Binary class
