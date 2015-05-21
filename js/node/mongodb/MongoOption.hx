@@ -61,7 +61,7 @@ extern class MongoOption
 	/**
 	 * {String}, the prefered read preference (ReadPreference.PRIMARY, ReadPreference.PRIMARY_PREFERRED, ReadPreference.SECONDARY, ReadPreference.SECONDARY_PREFERRED, ReadPreference.NEAREST).
 	 */
-	var readPreference 		: String;
+	var readPreference 		: EitherType<String,ReadPreference>;
 	
 	/**
 	 * {Boolean, default:false}, use c++ bson parser.
@@ -189,7 +189,7 @@ extern class MongoIndexOption
 	 * {String}, the preferred read preference ((Server.PRIMARY, Server.PRIMARY_PREFERRED, Server.SECONDARY, Server.SECONDARY_PREFERRED, Server.NEAREST).
 	 * Use only in MongoDatabase 'indexInformation' method.
 	 */
-	var readPreference  : String;
+	var readPreference  : EitherType<String,ReadPreference>;
 }
 
 /**
@@ -621,7 +621,7 @@ extern class MongoCursorOption
 	 *  { String }, the preferred read preference (ReadPreference.PRIMARY, ReadPreference.PRIMARY_PREFERRED, ReadPreference.SECONDARY, ReadPreference.SECONDARY_PREFERRED, ReadPreference.NEAREST).
 	 *  Use only in the MongoDatabase 'cursorInfo' method.
 	 */
-	var readPreference : String;
+	var readPreference : EitherType<String,ReadPreference>;
 	
 }
 
@@ -670,7 +670,7 @@ extern class MongoCollectionFetchOption
 	/**
 	 * {String}, the preferred read preference (ReadPreference.PRIMARY, ReadPreference.PRIMARY_PREFERRED, ReadPreference.SECONDARY, ReadPreference.SECONDARY_PREFERRED, ReadPreference.NEAREST).
 	 */
-	var readPreference 		: String;	
+	var readPreference 		: EitherType<String,ReadPreference>;	
 	
 	/**
 	 * (Boolean, default:false) returns an error if the collection does not exist
@@ -711,7 +711,7 @@ extern class MongoCollectionBuildOption
 	/**
 	 * {String}, the prefered read preference (ReadPreference.PRIMARY, ReadPreference.PRIMARY_PREFERRED, ReadPreference.SECONDARY, ReadPreference.SECONDARY_PREFERRED, ReadPreference.NEAREST).
 	 */
-	var readPreference 				:String;
+	var readPreference 				:EitherType<String,ReadPreference>;
 	/**
 	 * {Boolean, default:false}, Allow reads from secondaries.
 	 */
@@ -735,6 +735,26 @@ extern class MongoCollectionBuildOption
 	 */
 	var dropTarget : Bool;
 	
+}
+
+/**
+ * 
+ */
+extern class MongoAggregateOptionCursorOption
+{
+	var batchSize:Int;
+}
+
+/**
+ * 
+ */
+extern class MongoCollectionAggregateOption
+{
+	var readPreference : EitherType<ReadPreference,String>;
+	var cursor : MongoAggregateOptionCursorOption;
+	var explain : Bool;
+	var allowDiskUse:Bool;
+	var maxTimeMS:Int;
 }
 
 /**
@@ -797,7 +817,7 @@ extern class MongoStatsOption
 	/**
 	 * { String }, the preferred read preference ((Server.PRIMARY, Server.PRIMARY_PREFERRED, Server.SECONDARY, Server.SECONDARY_PREFERRED, Server.NEAREST).
 	 */
-	var readPreference 	:String; 
+	var readPreference 	:EitherType<String,ReadPreference>; 
 }
 
 

@@ -1,7 +1,5 @@
 package js.node.mongodb;
 
-import js.node.mongodb.Document;
-
 /**
  * Typedefs for callbacks.
  */

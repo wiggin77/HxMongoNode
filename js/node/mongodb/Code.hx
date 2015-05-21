@@ -2,7 +2,6 @@ package js.node.mongodb;
 
 /**
  * A class representation of the BSON Code type.
- * @author Eduardo Pons - eduardo@thelaborat.org
  */
 @:jsRequire("mongodb", "Code")
 extern class Code
@@ -10,10 +9,9 @@ extern class Code
 	
 	/**
 	 * A class representation of the BSON Code type.
-	 * @param	p_code
-	 * @param	p_scope
+	 * @param  code  - a string or function.
+	 * @param  scope - an optional scope for the function.
 	 */
-	function new(p_code:String,p_scope:Dynamic):Void;
-	
+	function new(code:haxe.extern.EitherType<String,Dynamic->Void>, scope:Dynamic):Void;
 	
 }

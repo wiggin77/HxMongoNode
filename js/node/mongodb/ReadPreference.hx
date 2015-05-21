@@ -2,13 +2,24 @@ package js.node.mongodb;
 
 /**
  * A class representation of the Read Preference.
- * @author Eduardo Pons - eduardo@thelaborat.org
  */
+@:enum
+abstract ReadPreference(String) 
+{
+	var PRIMARY = 'primary';
+	var PRIMARY_PREFERRED = 'primaryPreferred';
+	var SECONDARY = 'secondary';
+	var SECONDARY_PREFERRED = 'secondaryPreferred';
+	var NEAREST = 'nearest';
+}
+
+#if 0
 @:jsRequire("mongodb", "ReadPreference")
 extern class ReadPreference
 {
 	/**
-	 * Read from primary only. All operations produce an error (throw an exception where applicable) if primary is unavailable. Cannot be combined with tags (This is the default.).
+	 * Read from primary only. All operations produce an error (throw an exception where applicable) if primary is unavailable. 
+	 * Cannot be combined with tags (This is the default.).
 	 */
 	static var PRIMARY				 :String;
 	
@@ -39,3 +50,4 @@ extern class ReadPreference
 	 */
 	function new(p_type:String,p_tags:Dynamic);
 }
+#end

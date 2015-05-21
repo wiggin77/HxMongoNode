@@ -1,28 +1,51 @@
 package js.node.mongodb;
+
+import js.node.mongodb.AggregationCursor;
+import js.node.mongodb.Callback.ResultCallback;
+import js.node.mongodb.MongoDocument;
+import js.node.mongodb.MongoDocument.WriteConcern;
+import js.node.mongodb.MongoOption.MongoCollectionAggregateOption;
 import js.node.mongodb.MongoOption.MongoCollectionBuildOption;
 import js.node.mongodb.MongoOption.MongoCollectionOption;
 
 /**
- * ...
- * @author Eduardo Pons - eduardo@thelaborat.org
+ * Embodies a MongoDB collection allowing for insert/update/remove/find 
+ * and other command operation on that MongoDB collection.
  */
 @:jsRequire("mongodb", "Collection")
 extern class MongoCollection
 {
-	
+	/**
+	 * Get the collection name.
+	 */
+	var collectionname(default,null) : String;
 
 	/**
-	 * Create a new Collection instance (INTERNAL TYPE, do not instantiate directly)
-	 * @param	p_db
-	 * @param	p_name
-	 * @param	p_pkfactory
-	 * @param	p_options
+	 * Get the full collection namespace.
 	 */
-	@:overload(function (p_db:MongoDatabase,p_name:String):Void{})
-	@:overload(function (p_db:MongoDatabase,p_name:String,p_pkfactory : ObjectID):Void{})
-	function new(p_db:MongoDatabase,p_name:String,p_pkfactory : ObjectID,p_options : MongoCollectionBuildOption):Void;
+	var namespace(default,null) : String;
 
-	
+	/**
+	 * The current write concern values.
+	 */
+	var writeConcern(default,null) : WriteConcern;
+
+	/**
+	 * Get current index hint for collection.
+	 */
+	var hint(default,null) : MongoDocument;
+
+	/**
+	 * Execute an aggregation framework pipeline against the collection, needs MongoDB >= 2.2.
+	 * @param  pipeline - Array containing all the aggregation framework commands for the execution.
+	 * @param  options 	- Optional settings.
+	 * @param  callback - result callback
+	 * @return AggregationCursor or null
+	 */
+	function aggregate(pipeline:Array<MongoDocument>, options:MongoCollectionAggregateOption, callback:ResultCallback<MongoDocument>) : AggregationCursor;
+
+
+
 	var insert						: Dynamic;
 	var remove                      : Dynamic;
 	var rename                      : Dynamic;
@@ -49,7 +72,6 @@ extern class MongoCollection
 	var geoNear                     : Dynamic;
 	var geoHaystackSearch           : Dynamic;
 	var indexes                     : Dynamic;
-	var aggregate                   : Dynamic;
 	var stats                       : Dynamic;
 	var initializeUnorderedBulkOp   : Dynamic;
 	var initializeOrderedBulkOp     : Dynamic;

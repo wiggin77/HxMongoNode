@@ -8,7 +8,6 @@ import js.node.Buffer;
 @:jsRequire("mongodb", "Binary")
 extern class Binary
 {
-	
 	/**
 	 * 0	Default BSON type
 	 */

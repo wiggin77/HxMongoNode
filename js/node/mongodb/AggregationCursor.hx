@@ -3,7 +3,7 @@ package js.node.mongodb;
 import js.node.events.EventEmitter;
 import js.node.mongodb.Callback.ResultCallback;
 import js.node.mongodb.Callback.ToArrayCallback;
-import js.node.mongodb.Document;
+import js.node.mongodb.MongoDocument;
 import js.node.mongodb.MongoError;
 import js.node.stream.Readable;
 
@@ -32,9 +32,9 @@ extern class AggregationCursor extends Readable<AggregationCursor>
 
 	/**
 	 * Close the cursor, sending a AggregationCursor command and emitting close.
-	 * @param  callback - callback of type ResultCallback<Document>
+	 * @param  callback - callback of type ResultCallback<MongoDocument>
 	 */
-	function close(callback:ResultCallback<Document>) : Void;
+	function close(callback:ResultCallback<MongoDocument>) : Void;
 
 	/**
 	 * Iterates over all the documents for this cursor. As with {cursor.toArray}, 
@@ -45,29 +45,29 @@ extern class AggregationCursor extends Readable<AggregationCursor>
 	 * the caller is responsible for making sure that the entire result can fit in 
 	 * memory.
 	 * 
-	 * @param  callback - callback of type ResultCallback<Document>
+	 * @param  callback - callback of type ResultCallback<MongoDocument>
 	 */
-	function each(callback:ResultCallback<Document>) : Void;
+	function each(callback:ResultCallback<MongoDocument>) : Void;
 
 	/**
 	 * Execute the explain for the cursor.
-	 * @param  callback - callback of type ResultCallback<Document>
+	 * @param  callback - callback of type ResultCallback<MongoDocument>
 	 */
-	function explain(callback:ResultCallback<Document>) : Void;
+	function explain(callback:ResultCallback<MongoDocument>) : Void;
 
 	/**
 	 * Add a geoNear stage to the aggregation pipeline.
 	 * @param  document - a document struct
 	 * @return this
 	 */
-	function geoNear(document:Document) : AggregationCursor;
+	function geoNear(document:MongoDocument) : AggregationCursor;
 
 	/**
 	 * Add a group stage to the aggregation pipeline.
 	 * @param  document - a document struct
 	 * @return this
 	 */
-	function group(document:Document) : AggregationCursor;
+	function group(document:MongoDocument) : AggregationCursor;
 
 	/**
 	 * Is the cursor closed.
@@ -87,7 +87,7 @@ extern class AggregationCursor extends Readable<AggregationCursor>
 	 * @param  document - a document struct
 	 * @return this
 	 */
-	function match(document:Document) : AggregationCursor;
+	function match(document:MongoDocument) : AggregationCursor;
 
 	/**
 	 * Add a maxTimeMS stage to the aggregation pipeline.
@@ -98,9 +98,9 @@ extern class AggregationCursor extends Readable<AggregationCursor>
 
 	/**
 	 * Get the next available document from the cursor, returns null if no more documents are available.
-	 * @param  callback - callback of type ResultCallback<Document>
+	 * @param  callback - callback of type ResultCallback<MongoDocument>
 	 */
-	function next(callback:ResultCallback<Document>) : Void;
+	function next(callback:ResultCallback<MongoDocument>) : Void;
 
 	/**
 	 * Add a out stage to the aggregation pipeline.
@@ -114,14 +114,14 @@ extern class AggregationCursor extends Readable<AggregationCursor>
 	 * @param  document - the project stage document.
 	 * @return this
 	 */
-	function project(document:Document) : AggregationCursor;
+	function project(document:MongoDocument) : AggregationCursor;
 
 	/**
 	 * Add a redact stage to the aggregation pipeline
 	 * @param  document - the redact stage document.
 	 * @return this
 	 */
-	function redact(document:Document) : AggregationCursor;
+	function redact(document:MongoDocument) : AggregationCursor;
 
 	/**
 	 * Resets the cursor.
@@ -146,7 +146,7 @@ extern class AggregationCursor extends Readable<AggregationCursor>
 	 * @param  document - the sort stage document
 	 * @return this
 	 */
-	function sort(document:Document) : AggregationCursor;
+	function sort(document:MongoDocument) : AggregationCursor;
 
 	/**
 	 * Returns an array of documents. The caller is responsible 
@@ -155,9 +155,9 @@ extern class AggregationCursor extends Readable<AggregationCursor>
 	 * when this cursor had been previouly accessed. In that case, 
 	 * cursor.rewind() can be used to reset the cursor.
 	 * 
-	 * @param  callback - callback of type ToArrayCallback<Document>
+	 * @param  callback - callback of type ToArrayCallback<MongoDocument>
 	 */
-	function toArray(callback:ToArrayCallback<Document>) : Void;
+	function toArray(callback:ToArrayCallback<MongoDocument>) : Void;
 
 	/**
 	 * Add a unwind stage to the aggregation pipeline.
