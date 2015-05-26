@@ -1,12 +1,15 @@
 package js.node.mongodb;
 
 import js.node.mongodb.AggregationCursor;
-import js.node.mongodb.Callback.ResultCallback;
+import js.node.mongodb.MongoCallback.BulkWriteOpCallback;
+import js.node.mongodb.MongoCallback.ResultCallback;
 import js.node.mongodb.MongoDocument;
-import js.node.mongodb.MongoDocument.WriteConcern;
-import js.node.mongodb.MongoOption.MongoCollectionAggregateOption;
-import js.node.mongodb.MongoOption.MongoCollectionBuildOption;
-import js.node.mongodb.MongoOption.MongoCollectionOption;
+import js.node.mongodb.MongoOption.CollectionBulkWriteOption;
+import js.node.mongodb.MongoOption.CollectionWriteConcern;
+import js.node.mongodb.MongoOption.CollectionAggregateOption;
+import js.node.mongodb.MongoOption.CollectionBuildOption;
+import js.node.mongodb.MongoOption.CollectionOption;
+
 
 /**
  * Embodies a MongoDB collection allowing for insert/update/remove/find 
@@ -28,7 +31,7 @@ extern class MongoCollection
 	/**
 	 * The current write concern values.
 	 */
-	var writeConcern(default,null) : WriteConcern;
+	var writeConcern(default,null) : CollectionWriteConcern;
 
 	/**
 	 * Get current index hint for collection.
@@ -42,7 +45,9 @@ extern class MongoCollection
 	 * @param  callback - result callback
 	 * @return AggregationCursor or null
 	 */
-	function aggregate(pipeline:Array<MongoDocument>, options:MongoCollectionAggregateOption, callback:ResultCallback<MongoDocument>) : AggregationCursor;
+	function aggregate(pipeline:Array<MongoDocument>, options:CollectionAggregateOption, callback:ResultCallback<MongoDocument>) : AggregationCursor;
+
+	function bulkWrite(operations:Array<MongoDocument>, options:CollectionBulkWriteOption, callback:BulkWriteOpCallback) : Void;
 
 
 

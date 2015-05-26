@@ -1,8 +1,8 @@
 package js.node.mongodb;
 
 import js.node.events.EventEmitter;
-import js.node.mongodb.Callback.ResultCallback;
-import js.node.mongodb.Callback.ToArrayCallback;
+import js.node.mongodb.MongoCallback.ResultCallback;
+import js.node.mongodb.MongoCallback.ToArrayCallback;
 import js.node.mongodb.MongoDocument;
 import js.node.mongodb.MongoError;
 import js.node.stream.Readable;

@@ -2,8 +2,8 @@ package js.node.mongodb;
 import js.node.events.EventEmitter;
 import js.node.mongodb.Admin;
 import js.node.mongodb.MongoOption.MongoAuthOption;
-import js.node.mongodb.MongoOption.MongoCollectionFetchOption;
-import js.node.mongodb.MongoOption.MongoCollectionOption;
+import js.node.mongodb.MongoOption.CollectionFetchOption;
+import js.node.mongodb.MongoOption.CollectionOption;
 import js.node.mongodb.MongoOption.MongoCommandOption;
 import js.node.mongodb.MongoOption.MongoCursorOption;
 import js.node.mongodb.MongoOption.MongoDatabaseOption;
@@ -85,7 +85,7 @@ extern class MongoDatabase extends EventEmitter<MongoDatabase>
 	 * @param	p_callback
 	 */
 	@:overload(function (p_name:String,p_callback:MongoError->MongoCollection->Void):MongoCollection{})
-	function collection(p_name:String, p_options : MongoCollectionFetchOption, p_callback:MongoError->MongoCollection->Void):MongoCollection;
+	function collection(p_name:String, p_options : CollectionFetchOption, p_callback:MongoError->MongoCollection->Void):MongoCollection;
 	
 	/**
 	 * Fetch all collections for the current db.
@@ -154,7 +154,7 @@ extern class MongoDatabase extends EventEmitter<MongoDatabase>
 	 * @param	p_callback
 	 */
 	@:overload(function (p_name:String,  p_callback:MongoError->MongoCollection->Void):Void{})	
-	function createCollection(p_name:String, p_options:MongoCollectionOption, p_callback:MongoError->MongoCollection->Void):Void;
+	function createCollection(p_name:String, p_options:CollectionOption, p_callback:MongoError->MongoCollection->Void):Void;
 	
 	/**
 	 * Execute a command hash against MongoDB. This lets you acess any commands not available through the api on the server.
@@ -176,7 +176,7 @@ extern class MongoDatabase extends EventEmitter<MongoDatabase>
 	 * @param	p_callback
 	 */
 	@:overload(function (p_from : String, p_to:String, p_callback:MongoError->MongoCollection->Void):Void{})
-	function renameCollection(p_from : String, p_to:String, p_options:MongoCollectionOption, p_callback:MongoError->MongoCollection->Void):Void;
+	function renameCollection(p_from : String, p_to:String, p_options:CollectionOption, p_callback:MongoError->MongoCollection->Void):Void;
 	
 	/**
 	 * Creates an index on the collection.

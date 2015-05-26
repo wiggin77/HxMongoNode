@@ -41,7 +41,7 @@ extern class MongoOption
 	/**
 	 *  { Number / String, > -1 || ‘majority’ || tag name } the write concern for the operation where < 1 is no acknowlegement of write and w >= 1, w = ‘majority’ or tag acknowledges the write
 	 */
-	var w 					: Dynamic;
+	var w 					: EitherType<String,Int>;
 	
 	/**
 	 * {Number, 0} set the timeout for waiting for write concern to finish (combines with w option)
@@ -125,7 +125,7 @@ extern class MongoIndexOption
 	/**
 	 *  { Number / String, > -1 || ‘majority’ || tag name } the write concern for the operation where < 1 is no acknowlegement of write and w >= 1, w = ‘majority’ or tag acknowledges the write
 	 */
-	var w 					: Dynamic;
+	var w 					: EitherType<String,Int>;
 	
 	/**
 	 * {Number, 0} set the timeout for waiting for write concern to finish (combines with w option)
@@ -450,7 +450,7 @@ extern class MongoAddUserOption
 	/**
 	 * {Number/String, > -1 || ‘majority’ || tag name} the write concern for the operation where &lt; 1 is no acknowledgement of write and w >= 1, w = ‘majority’ or tag acknowledges the write
 	 */
-	var w 			: Dynamic;			
+	var w 			: EitherType<String,Int>;			
 	/**
 	 * {Number, 0} set the timeout for waiting for write concern to finish (combines with w option)
 	 */
@@ -481,7 +481,7 @@ extern class MongoRemoveUserOption
 	/**
 	 * {Number/String, > -1 || ‘majority’ || tag name} the write concern for the operation where &lt; 1 is no acknowledgement of write and w >= 1, w = ‘majority’ or tag acknowledges the write
 	 */
-	var w 			: Dynamic;			
+	var w 			: EitherType<String,Int>;			
 	/**
 	 * {Number, 0} set the timeout for waiting for write concern to finish (combines with w option)
 	 */
@@ -630,12 +630,12 @@ extern class MongoCursorOption
 /**
  * 
  */
-extern class MongoCollectionFetchOption
+extern class CollectionFetchOption
 {
 	/**
 	 * {Number/String, > -1 || ‘majority’ || tag name} the write concern for the operation where &lt; 1 is no acknowledgement of write and w >= 1, w = ‘majority’ or tag acknowledges the write
 	 */	
-	var w					: Dynamic;	
+	var w					: EitherType<String,Int>;	
 	
 	/**
 	 * {Number, 0} set the timeout for waiting for write concern to finish (combines with w option)
@@ -682,7 +682,7 @@ extern class MongoCollectionFetchOption
 /**
  * 
  */
-extern class MongoCollectionOption extends MongoCollectionFetchOption
+extern class CollectionOption extends CollectionFetchOption
 {
 	/**
 	 * {Boolean, default:false}, create a capped collection.
@@ -706,7 +706,7 @@ extern class MongoCollectionOption extends MongoCollectionFetchOption
 /**
  * 
  */
-extern class MongoCollectionBuildOption
+extern class CollectionBuildOption
 {
 	/**
 	 * {String}, the prefered read preference (ReadPreference.PRIMARY, ReadPreference.PRIMARY_PREFERRED, ReadPreference.SECONDARY, ReadPreference.SECONDARY_PREFERRED, ReadPreference.NEAREST).
@@ -740,7 +740,7 @@ extern class MongoCollectionBuildOption
 /**
  * 
  */
-extern class MongoAggregateOptionCursorOption
+extern class AggregateOptionCursorOption
 {
 	var batchSize:Int;
 }
@@ -748,13 +748,48 @@ extern class MongoAggregateOptionCursorOption
 /**
  * 
  */
-extern class MongoCollectionAggregateOption
+extern class CollectionAggregateOption
 {
 	var readPreference : EitherType<ReadPreference,String>;
-	var cursor : MongoAggregateOptionCursorOption;
+	var cursor : AggregateOptionCursorOption;
 	var explain : Bool;
 	var allowDiskUse:Bool;
 	var maxTimeMS:Int;
+}
+
+
+extern class CollectionBulkWriteOption
+{
+	/**
+	 * {Number/String, > -1 || ‘majority’ || tag name} the write concern for the operation where &lt; 1 is no acknowledgement of write and w >= 1, w = ‘majority’ or tag acknowledges the write
+	 */	
+	var w					: EitherType<String,Int>;	
+	
+	/**
+	 * {Number, 0} set the timeout for waiting for write concern to finish (combines with w option)
+	 */
+	var wtimeout 			: Int;	
+	
+	/**
+	 * (Boolean, default:false) write waits for journal sync before returning
+	 */
+	var j 					: Bool;	
+	
+	/**
+	 * {Boolean, default:false}, serialize functions on the document.
+	 */
+	var serializeFunctions 	: Bool;	
+}
+
+/**
+ * 
+ */
+extern class CollectionWriteConcern
+{ 
+	var w : EitherType<String,EitherType<Int,MongoDocument>>;
+	var j : Bool;
+	var fsync : Bool;
+	var wtimeout : Int;
 }
 
 /**

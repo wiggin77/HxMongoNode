@@ -1,7 +1,7 @@
 package js.node.mongodb;
 
 import haxe.extern.EitherType;
-import js.node.mongodb.Callback.ResultCallback;
+import js.node.mongodb.MongoCallback.ResultCallback;
 import js.node.mongodb.MongoDocument;
 import js.node.mongodb.MongoOption.MongoAddUserOption;
 import js.node.mongodb.MongoOption.MongoRemoveUserOption;
