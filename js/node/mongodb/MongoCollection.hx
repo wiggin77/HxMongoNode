@@ -2,9 +2,11 @@ package js.node.mongodb;
 
 import js.node.mongodb.AggregationCursor;
 import js.node.mongodb.MongoCallback.BulkWriteOpCallback;
+import js.node.mongodb.MongoCallback.CountCallback;
 import js.node.mongodb.MongoCallback.ResultCallback;
 import js.node.mongodb.MongoDocument;
 import js.node.mongodb.MongoOption.CollectionBulkWriteOption;
+import js.node.mongodb.MongoOption.CollectionCountOption;
 import js.node.mongodb.MongoOption.CollectionWriteConcern;
 import js.node.mongodb.MongoOption.CollectionAggregateOption;
 import js.node.mongodb.MongoOption.CollectionBuildOption;
@@ -45,9 +47,31 @@ extern class MongoCollection
 	 * @param  callback - result callback
 	 * @return AggregationCursor or null
 	 */
-	function aggregate(pipeline:Array<MongoDocument>, options:CollectionAggregateOption, callback:ResultCallback<MongoDocument>) : AggregationCursor;
+	function aggregate(pipeline:Array<MongoDocument>, options:CollectionAggregateOption, callback:ResultCallback) : AggregationCursor;
 
+	/**
+	 * Perform a bulkWrite operation without a fluent API.
+	 * Legal operation types are
+	 * 		{ insertOne: { document: { a: 1 } } }
+	 * 		{ updateOne: { filter: {a:2}, update: {$set: {a:2}}, upsert:true } }
+	 * 		{ updateMany: { filter: {a:2}, update: {$set: {a:2}}, upsert:true } }
+	 * 		{ deleteOne: { filter: {c:1} } }
+	 * 		{ deleteMany: { filter: {c:1} } }
+	 * 		{ replaceOne: { filter: {c:3}, replacement: {c:4}, upsert:true}}
+	 * 		
+	 * @param  operations<MongoDocument> - Bulk operations to perform.
+	 * @param  options                   - Optional settings.
+	 * @param  callback                  - The command result callback
+	 */
 	function bulkWrite(operations:Array<MongoDocument>, options:CollectionBulkWriteOption, callback:BulkWriteOpCallback) : Void;
+
+	/**
+	 * Count number of matching documents in the db to a query.
+	 * @param  query    - The query for the count.
+	 * @param  options  - Optional settings.
+	 * @param  callback - callback of type CountCallback.
+	 */
+	function count(query:MongoDocument, options:CollectionCountOption, callback:CountCallback) : Void;
 
 
 
@@ -57,7 +81,6 @@ extern class MongoCollection
 	var save                        : Dynamic;
 	var update                      : Dynamic;
 	var distinct                    : Dynamic;
-	var count                       : Dynamic;
 	var drop                        : Dynamic;
 	var findAndModify               : Dynamic;
 	var findAndRemove               : Dynamic;

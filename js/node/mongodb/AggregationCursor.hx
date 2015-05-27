@@ -32,9 +32,9 @@ extern class AggregationCursor extends Readable<AggregationCursor>
 
 	/**
 	 * Close the cursor, sending a AggregationCursor command and emitting close.
-	 * @param  callback - callback of type ResultCallback<MongoDocument>
+	 * @param  callback - callback of type ResultCallback
 	 */
-	function close(callback:ResultCallback<MongoDocument>) : Void;
+	function close(callback:ResultCallback) : Void;
 
 	/**
 	 * Iterates over all the documents for this cursor. As with {cursor.toArray}, 
@@ -45,15 +45,15 @@ extern class AggregationCursor extends Readable<AggregationCursor>
 	 * the caller is responsible for making sure that the entire result can fit in 
 	 * memory.
 	 * 
-	 * @param  callback - callback of type ResultCallback<MongoDocument>
+	 * @param  callback - callback of type ResultCallback
 	 */
-	function each(callback:ResultCallback<MongoDocument>) : Void;
+	function each(callback:ResultCallback) : Void;
 
 	/**
 	 * Execute the explain for the cursor.
-	 * @param  callback - callback of type ResultCallback<MongoDocument>
+	 * @param  callback - callback of type ResultCallback
 	 */
-	function explain(callback:ResultCallback<MongoDocument>) : Void;
+	function explain(callback:ResultCallback) : Void;
 
 	/**
 	 * Add a geoNear stage to the aggregation pipeline.
@@ -98,9 +98,9 @@ extern class AggregationCursor extends Readable<AggregationCursor>
 
 	/**
 	 * Get the next available document from the cursor, returns null if no more documents are available.
-	 * @param  callback - callback of type ResultCallback<MongoDocument>
+	 * @param  callback - callback of type ResultCallback
 	 */
-	function next(callback:ResultCallback<MongoDocument>) : Void;
+	function next(callback:ResultCallback) : Void;
 
 	/**
 	 * Add a out stage to the aggregation pipeline.

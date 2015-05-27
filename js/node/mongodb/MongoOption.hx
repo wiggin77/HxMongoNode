@@ -757,7 +757,9 @@ extern class CollectionAggregateOption
 	var maxTimeMS:Int;
 }
 
-
+/**
+ * 
+ */
 extern class CollectionBulkWriteOption
 {
 	/**
@@ -780,6 +782,16 @@ extern class CollectionBulkWriteOption
 	 */
 	var serializeFunctions 	: Bool;	
 }
+
+
+extern class CollectionCountOption
+{
+	var limit : Bool;
+	var skip : Bool;
+	var hint : String;
+	var readPreference : EitherType<String,ReadPreference>;
+}
+
 
 /**
  * 
@@ -821,11 +833,11 @@ extern class MongoCommandOption
 	/**
 	 * {String}, the preferred read preference (ReadPreference.PRIMARY, ReadPreference.PRIMARY_PREFERRED, ReadPreference.SECONDARY, ReadPreference.SECONDARY_PREFERRED, ReadPreference.NEAREST).
 	 */
-	var readPreference 			:EitherType<String,ReadPreference>;
+	var readPreference : EitherType<String,ReadPreference>;
 	/**
 	 * {Number}, number of milliseconds to wait before aborting the query.
 	 */
-	var maxTimeMS 				:Int;	
+	var maxTimeMS : Int;	
 	/**
 	 * {Boolean}, overrides the default redirection of certain commands to primary.
 	 */
