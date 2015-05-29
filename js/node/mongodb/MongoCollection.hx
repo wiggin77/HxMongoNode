@@ -4,7 +4,7 @@ import js.node.mongodb.AggregationCursor;
 import js.node.mongodb.MongoCallback.BulkWriteOpCallback;
 import js.node.mongodb.MongoCallback.CountCallback;
 import js.node.mongodb.MongoCallback.ResultCallback;
-import js.node.mongodb.MongoDocument;
+import js.node.mongodb.MongoDocument.MongoDocument;
 import js.node.mongodb.MongoOption.CollectionBulkWriteOption;
 import js.node.mongodb.MongoOption.CollectionCountOption;
 import js.node.mongodb.MongoOption.CollectionWriteConcern;
@@ -14,7 +14,7 @@ import js.node.mongodb.MongoOption.CollectionOption;
 
 
 /**
- * Embodies a MongoDB collection allowing for insert/update/remove/find 
+ * Embodies a MongoDB collection allowing for insert/update/remove/find
  * and other command operation on that MongoDB collection.
  */
 @:jsRequire("mongodb", "Collection")
@@ -58,7 +58,7 @@ extern class MongoCollection
 	 * 		{ deleteOne: { filter: {c:1} } }
 	 * 		{ deleteMany: { filter: {c:1} } }
 	 * 		{ replaceOne: { filter: {c:3}, replacement: {c:4}, upsert:true}}
-	 * 		
+	 *
 	 * @param  operations<MongoDocument> - Bulk operations to perform.
 	 * @param  options                   - Optional settings.
 	 * @param  callback                  - The command result callback
@@ -71,8 +71,7 @@ extern class MongoCollection
 	 * @param  options  - Optional settings.
 	 * @param  callback - callback of type CountCallback.
 	 */
-	function count(query:MongoDocument, options:CollectionCountOption, callback:CountCallback) : Void;
-
+	function count(query:MongoDocument, options:CollectionCountOption, callback:CountCallback) : Void;/**
 
 
 	var insert						: Dynamic;
@@ -104,5 +103,5 @@ extern class MongoCollection
 	var initializeUnorderedBulkOp   : Dynamic;
 	var initializeOrderedBulkOp     : Dynamic;
 	var parallelCollectionScan      : Dynamic;
-	
+
 }

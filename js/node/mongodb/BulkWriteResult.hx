@@ -1,7 +1,5 @@
 package js.node.mongodb;
 
-import js.node.mongodb.MongoDocument;
-
 // Typedefs specific to bulk write results.
 //
 typedef InsertedId = { index:Int, _id:String };
@@ -10,8 +8,8 @@ typedef UpsertedId = InsertedId;
 typedef WriteError = { code:Int, index:Int, errmsg:String };
 typedef WriteConcernError = { code:Int, errmsg:String };
 
-typedef BulkResult = { ok:Bool,  writeErrors:Array<WriteError>,  writeConcernErrors:Array<WriteConcernError>, 
-                      insertedIds:Array<InsertedId>,  nInserted:Int,  nUpserted:Int,  nMatched:Int,  
+typedef BulkResult = { ok:Bool,  writeErrors:Array<WriteError>,  writeConcernErrors:Array<WriteConcernError>,
+                      insertedIds:Array<InsertedId>,  nInserted:Int,  nUpserted:Int,  nMatched:Int,
                       nModified:Int,  nRemoved:Int,  upserted:Array<UpsertedId> };
 
 
@@ -78,5 +76,5 @@ extern class BulkWriteResult
 	 * Returns true if the bulk operation contains a write error.
 	 */
 	function hasWriteErrors() : Bool;
-	
+
 } // End of BulkWriteResultClass
