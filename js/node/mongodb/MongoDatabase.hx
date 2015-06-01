@@ -4,12 +4,12 @@ import js.node.mongodb.Admin;
 import js.node.mongodb.MongoOption.MongoAuthOption;
 import js.node.mongodb.MongoOption.CollectionFetchOption;
 import js.node.mongodb.MongoOption.CollectionOption;
-import js.node.mongodb.MongoOption.MongoCommandOption;
+import js.node.mongodb.Admin.CommandOptions;
 import js.node.mongodb.MongoOption.MongoCursorOption;
 import js.node.mongodb.MongoOption.MongoDatabaseOption;
-import js.node.mongodb.MongoOption.MongoIndexOption;
-import js.node.mongodb.MongoOption.MongoStatsOption;
-import js.node.mongodb.MongoOption.MongoAddUserOption;
+import js.node.mongodb.MongoCollection.IndexOptions;
+import js.node.mongodb.MongoCollection.StatsOptions;
+import js.node.mongodb.Admin.AddUserOptions;
 import js.node.mongodb.MongoOption.MongoRemoveUserOption;
 
 /**
@@ -136,7 +136,7 @@ extern class MongoDatabase extends EventEmitter<MongoDatabase>
 	 * @param	p_callback
 	 */
 	@:overload(function (p_username:String,p_password:String,p_callback:MongoError->Dynamic->Void):Void{})	
-	function addUser(p_username:String, p_password:String, p_options:MongoAddUserOption, p_callback:MongoError->Dynamic->Void):Void;
+	function addUser(p_username:String, p_password:String, p_options:AddUserOptions, p_callback:MongoError->Dynamic->Void):Void;
 	
 	/**
 	 * Remove a user from a database
@@ -163,7 +163,7 @@ extern class MongoDatabase extends EventEmitter<MongoDatabase>
 	 * @param	p_callback
 	 */
 	@:overload(function (p_selector:Dynamic,p_callback:MongoError->Dynamic->Void):Void{})	
-	function command(p_selector:Dynamic,p_options:MongoCommandOption,p_callback:MongoError->Dynamic->Void):Void;
+	function command(p_selector:Dynamic,p_options:CommandOptions,p_callback:MongoError->Dynamic->Void):Void;
 	
 	//Drop a collection from the database, removing it permanently. New accesses will create a new collection.
 	function dropCollection(p_name:String, p_callback:MongoError->Bool->Void):Void;
@@ -186,7 +186,7 @@ extern class MongoDatabase extends EventEmitter<MongoDatabase>
 	 * @param	p_callback
 	 */
 	@:overload(function (p_collection_name:String, p_field_or_spec:Dynamic,p_callback:MongoError->Dynamic->Void):Void{})	
-	function createIndex(p_collection_name:String, p_field_or_spec:Dynamic,p_options:MongoIndexOption, p_callback:MongoError->Dynamic->Void):Void;
+	function createIndex(p_collection_name:String, p_field_or_spec:Dynamic,p_options:IndexOptions, p_callback:MongoError->Dynamic->Void):Void;
 	
 	/**
 	 * Ensures that an index exists, if it does not it creates it
@@ -196,7 +196,7 @@ extern class MongoDatabase extends EventEmitter<MongoDatabase>
 	 * @param	p_callback
 	 */
 	@:overload(function (p_collection_name:String, p_field_or_spec:Dynamic,p_callback:MongoError->Dynamic->Void):Void{})		
-	function ensureIndex(p_collection_name:String, p_field_or_spec:Dynamic, p_options:MongoIndexOption, p_callback:MongoError->Dynamic->Void):Void;
+	function ensureIndex(p_collection_name:String, p_field_or_spec:Dynamic, p_options:IndexOptions, p_callback:MongoError->Dynamic->Void):Void;
 	
 	
 	/**
@@ -215,7 +215,7 @@ extern class MongoDatabase extends EventEmitter<MongoDatabase>
 	 * @param	p_callback
 	 */
 	@:overload(function (p_collection_name:String,p_callback:MongoError->Dynamic->Void):Void{})
-	function indexInformation(p_collection_name:String,p_options:MongoIndexOption,p_callback:MongoError->Dynamic->Void):Void;
+	function indexInformation(p_collection_name:String,p_options:IndexOptions,p_callback:MongoError->Dynamic->Void):Void;
 	
 	/**
 	 * Drop an index on a collection.
@@ -247,6 +247,6 @@ extern class MongoDatabase extends EventEmitter<MongoDatabase>
 	 * @param	p_callback
 	 */
 	@:overload(function (p_callback:MongoError->Dynamic->Void):Void{})
-	function stats(p_options:MongoStatsOption,p_callback:MongoError->Dynamic->Void):Void;
+	function stats(p_options:StatsOptions,p_callback:MongoError->Dynamic->Void):Void;
 	
 }

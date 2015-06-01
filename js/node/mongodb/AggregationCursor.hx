@@ -2,8 +2,9 @@ package js.node.mongodb;
 
 import js.node.events.EventEmitter;
 import js.node.mongodb.MongoCallback.ResultCallback;
-import js.node.mongodb.MongoCallback.ToArrayCallback;
+import js.node.mongodb.MongoCallback.ToArrayResultCallback;
 import js.node.mongodb.MongoDocument;
+import js.node.mongodb.MongoDocument.MongoResult;
 import js.node.mongodb.MongoError;
 import js.node.stream.Readable;
 
@@ -34,7 +35,7 @@ extern class AggregationCursor extends Readable<AggregationCursor>
 	 * Close the cursor, sending a AggregationCursor command and emitting close.
 	 * @param  callback - callback of type ResultCallback
 	 */
-	function close(callback:ResultCallback) : Void;
+	function close(callback:ResultCallback<MongoResult>) : Void;
 
 	/**
 	 * Iterates over all the documents for this cursor. As with {cursor.toArray}, 
@@ -47,13 +48,13 @@ extern class AggregationCursor extends Readable<AggregationCursor>
 	 * 
 	 * @param  callback - callback of type ResultCallback
 	 */
-	function each(callback:ResultCallback) : Void;
+	function each(callback:ResultCallback<MongoResult>) : Void;
 
 	/**
 	 * Execute the explain for the cursor.
 	 * @param  callback - callback of type ResultCallback
 	 */
-	function explain(callback:ResultCallback) : Void;
+	function explain(callback:ResultCallback<MongoResult>) : Void;
 
 	/**
 	 * Add a geoNear stage to the aggregation pipeline.
@@ -100,7 +101,7 @@ extern class AggregationCursor extends Readable<AggregationCursor>
 	 * Get the next available document from the cursor, returns null if no more documents are available.
 	 * @param  callback - callback of type ResultCallback
 	 */
-	function next(callback:ResultCallback) : Void;
+	function next(callback:ResultCallback<MongoResult>) : Void;
 
 	/**
 	 * Add a out stage to the aggregation pipeline.
@@ -157,7 +158,7 @@ extern class AggregationCursor extends Readable<AggregationCursor>
 	 * 
 	 * @param  callback - callback of type ToArrayCallback<MongoDocument>
 	 */
-	function toArray(callback:ToArrayCallback<MongoDocument>) : Void;
+	function toArray(callback:ToArrayResultCallback<MongoDocument>) : Void;
 
 	/**
 	 * Add a unwind stage to the aggregation pipeline.
