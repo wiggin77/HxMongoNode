@@ -1,5 +1,6 @@
 package js.node.mongodb;
 import js.node.mongodb.MongoOption.MongoCursorOption;
+import js.node.stream.Readable;
 
 /**
  * ...
