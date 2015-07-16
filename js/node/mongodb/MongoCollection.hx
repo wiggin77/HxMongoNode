@@ -257,7 +257,7 @@ extern class MongoCollection
 	function isCapped(callback:ResultCallback<MongoResult>) : Void;
 
 // TODO
-	//function listIndexes(options:BatchOptions) : 
+	function listIndexes(options:BatchOptions) : js.node.mongodb.CommandCursor;
 
 
 	var insert:Dynamic;

@@ -74,7 +74,7 @@ extern class MongoCursor extends EventEmitter<MongoCursor> implements IReadable
 
 	/**
 	 * Get the count of documents for this cursor.
-	 * @param  applySkipLimit - Should the count command apply limit and skip settings on the 
+	 * @param  applySkipLimit - Should the count command apply limit and skip settings on the
 	 *                          cursor or in the passed in options.
 	 * @param  options        - Optional settings.
 	 * @param  callback       - the result callback.
@@ -91,14 +91,14 @@ extern class MongoCursor extends EventEmitter<MongoCursor> implements IReadable
 
 
 	/**
-	 * Iterates over all the documents for this cursor. As with {cursor.toArray}, 
-	 * not all of the elements will be iterated if this cursor had been previouly 
-	 * accessed. In that case, {cursor.rewind} can be used to reset the cursor. 
-	 * However, unlike {cursor.toArray}, the cursor will only hold a maximum of 
-	 * batch size elements at any given time if batch size is specified. Otherwise, 
-	 * the caller is responsible for making sure that the entire result can fit in 
+	 * Iterates over all the documents for this cursor. As with {cursor.toArray},
+	 * not all of the elements will be iterated if this cursor had been previouly
+	 * accessed. In that case, {cursor.rewind} can be used to reset the cursor.
+	 * However, unlike {cursor.toArray}, the cursor will only hold a maximum of
+	 * batch size elements at any given time if batch size is specified. Otherwise,
+	 * the caller is responsible for making sure that the entire result can fit in
 	 * memory.
-	 * 
+	 *
 	 * @param  callback - The command result callback.
 	 */
 	function each(callback:ResultCallback<MongoDocument>) : Void;
@@ -117,9 +117,9 @@ extern class MongoCursor extends EventEmitter<MongoCursor> implements IReadable
 	function maxTimeMS(value:Int) : MongoCursor;
 
 	/**
-	 * Get the next available document from the cursor, returns null if no more 
+	 * Get the next available document from the cursor, returns null if no more
 	 * documents are available.
-	 * 
+	 *
 	 * @param  callback - The command result callback.
 	 */
 	function next(callback:ResultCallback<MongoDocument>) : Void;
@@ -137,14 +137,14 @@ extern class MongoCursor extends EventEmitter<MongoCursor> implements IReadable
 	function setBatchSize(value:Int) : Void;
 
 	/**
-	 * Returns an array of documents. The caller is responsible for making sure 
-	 * that there is enough memory to store the results. Note that the array only 
+	 * Returns an array of documents. The caller is responsible for making sure
+	 * that there is enough memory to store the results. Note that the array only
 	 * contain partial results when this cursor had been previouly accessed.
-	 * 
+	 *
 	 * @param  callback - The command result callback.
 	 */
 	function toArray(callback:ToArrayResultCallback<MongoDocument>) : Void;
-	
+
 	//
 	// IReadable.
 	//
@@ -159,14 +159,13 @@ extern class MongoCursor extends EventEmitter<MongoCursor> implements IReadable
     function unshift(chunk:String):Void;
     function wrap(stream:Dynamic):IReadable;
 
-	
 } // End of MongoCursor class
 
 //
 // Additional types.
 //
 
-typedef CursorCountOptions = 
+typedef CursorCountOptions =
 {
 	>CountOptions,
 
