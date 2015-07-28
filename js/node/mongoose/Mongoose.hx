@@ -1,8 +1,12 @@
 package js.node.mongoose;
 
-@:jsRequire("mongoose")
+@:jsRequire("mongoose", "Mongoose")
 extern class Mongoose
 {
+	public var connection (default,null) : Connection;
+	public var connections (default,null) : Array<Connection>;
+	public var version (default,null) : String;
+
 	/**
 	 * Mongoose constructor.
 	 *
@@ -85,8 +89,8 @@ extern class Mongoose
 	 * @return {Connection} the created Connection object
 	 * @api public
 	 */
-	@:overload(function(uri:String, ?options:Dynamic) : Connection)
-	@:overload(function(host:String, database_name:String, ?iPort:Int, options:Dynamic) : Connection)
+	@:overload(function(uri:String, ?options:Dynamic) : Connection{})
+	@:overload(function(host:String, database_name:String, ?iPort:Int, options:Dynamic) : Connection{})
 	public function createConnection() : Connection;
 
 	/**
@@ -119,7 +123,7 @@ extern class Mongoose
 	 * @api public
 	 * @return {Mongoose} this
 	 */
-	public function connect(uri:String, options:Dynamic, fn:Error->Void) : Mongoose;
+	public function connect(uri:String, ?options:Dynamic, ?fn:Error->Void) : Mongoose;
 
 	/**
 	 * Disconnects all connections.
@@ -128,7 +132,7 @@ extern class Mongoose
 	 * @return {Mongoose} this
 	 * @api public
 	 */
-	 public function disconnect(fn:Error->Void) : Mongoose;
+	 public function disconnect(?fn:Error->Void) : Mongoose;
 
 	/**
 	 * Defines a model or retrieves it.
@@ -148,7 +152,9 @@ extern class Mongoose
 	 *     // retrieve the Actor model
 	 *     var Actor = conn.model('Actor');
 	 *
-	 * _When no `collection` argument is passed, Mongoose produces a collection name by passing the model `name` to the [utils.toCollectionName](#utils_exports.toCollectionName) method. This method pluralizes the name. If you don't like this behavior, either pass a collection name or set your schemas collection name option._
+	 * _When no `collection` argument is passed, Mongoose produces a collection name by passing the model `name` to the 
+	 * [utils.toCollectionName](#utils_exports.toCollectionName) method. This method pluralizes the name. If you don't like 
+	 * this behavior, either pass a collection name or set your schemas collection name option._
 	 *
 	 * ####Example:
 	 *
@@ -169,7 +175,32 @@ extern class Mongoose
 	 * @param {Boolean} [skipInit] whether to skip initialization (defaults to false)
 	 * @api public
 	 */
-	 public function model(name:String, schema:Schema, ?collection:String, skipInit:Bool);
+	 public function model(name:String, schema:Schema, ?collection:String, ?skipInit:Bool) : Model;
+
+	/**
+	 * Returns an array of model names created on this instance of Mongoose.
+	 *
+	 * ####Note:
+	 *
+	 * _Does not include names of models created using `connection.model()`._
+	 *
+	 * @api public
+	 * @return {Array}
+	 */
+	 public function modelNames() : Array<String>;
+
+	/**
+	 * Declares a global plugin executed on all Schemas.
+	 *
+	 * Equivalent to calling `.plugin(fn)` on each Schema you create.
+	 *
+	 * @param {Function} fn plugin callback
+	 * @param {Object} [opts] optional options
+	 * @return {Mongoose} this
+	 * @see plugins ./plugins.html
+	 * @api public
+	 */
+	 public function plugin(fn:Error->Void, ?options:Dynamic) : Mongoose;
 
 
 } // End of Mongoose class
