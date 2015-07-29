@@ -89,8 +89,8 @@ extern class Mongoose
 	 * @return {Connection} the created Connection object
 	 * @api public
 	 */
-	@:overload(function(uri:String, ?options:Dynamic) : Connection{})
-	@:overload(function(host:String, database_name:String, ?iPort:Int, options:Dynamic) : Connection{})
+	@:overload(function(uri:String, ?options:{}}) : Connection {})
+	@:overload(function(host:String, database_name:String, ?iPort:Int, options:{}}) : Connection {})
 	public function createConnection() : Connection;
 
 	/**
@@ -123,7 +123,7 @@ extern class Mongoose
 	 * @api public
 	 * @return {Mongoose} this
 	 */
-	public function connect(uri:String, ?options:Dynamic, ?fn:Error->Void) : Mongoose;
+	public function connect(uri:String, ?options:{}}, ?fn:Error->Void) : Mongoose;
 
 	/**
 	 * Disconnects all connections.
@@ -200,7 +200,7 @@ extern class Mongoose
 	 * @see plugins ./plugins.html
 	 * @api public
 	 */
-	 public function plugin(fn:Error->Void, ?options:Dynamic) : Mongoose;
+	 public function plugin(fn:Error->Void, ?options:{}}) : Mongoose;
 
 
 } // End of Mongoose class
