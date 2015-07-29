@@ -3,9 +3,11 @@ package js.node.mongoose;
 @:jsRequire("mongoose", "Model")
 extern class Model
 {
-	public var db : Connection;
-	public var collection : Dynamic; // Really a MongoCollection
-	public var modelName : String;
+	public var db(default,null) : Connection;
+	public var collection(default,null) : Dynamic;  // Really a MongoCollection
+	public var modelName(default,null) : String;
+	public var schema(default,null) : Schema;
+	public var base(default,null) : Mongoose;
 
 	/**
 	 * Model constructor
@@ -77,6 +79,104 @@ extern class Model
 	 */
 	public function increment() : Model;
 
+	/**
+	 * Removes this document from the db.
+	 *
+	 * ####Example:
+	 *     product.remove(function (err, product) {
+	 *       if (err) return handleError(err);
+	 *       Product.findById(product._id, function (err, product) {
+	 *         console.log(product) // null
+	 *       })
+	 *     })
+	 *
+	 *
+	 * As an extra measure of flow control, remove will return a Promise (bound to `fn` if passed) so it could be chained, or hooked to recive errors
+	 *
+	 * ####Example:
+	 *     product.remove().then(function (product) {
+	 *        ...
+	 *     }).onRejected(function (err) {
+	 *        assert.ok(err)
+	 *     })
+	 *
+	 * @param {function(err,product)} [fn] optional callback
+	 * @return {Promise} Promise
+	 * @api public
+	 */
+	public function remove(?options:Dynamic, ?fn:Error->Dynamic->Void) : Promise;
+
+
+	/**
+	 * Returns another Model instance.
+	 *
+	 * ####Example:
+	 *
+	 *     var doc = new Tank;
+	 *     doc.model('User').findById(id, callback);
+	 *
+	 * @param {String} name model name
+	 * @api public
+	 */
+	public function model(name:String) : Model;
+
+	/**
+	 * Adds a discriminator type.
+	 *
+	 * ####Example:
+	 *
+	 *     function BaseSchema() {
+	 *       Schema.apply(this, arguments);
+	 *
+	 *       this.add({
+	 *         name: String,
+	 *         createdAt: Date
+	 *       });
+	 *     }
+	 *     util.inherits(BaseSchema, Schema);
+	 *
+	 *     var PersonSchema = new BaseSchema();
+	 *     var BossSchema = new BaseSchema({ department: String });
+	 *
+	 *     var Person = mongoose.model('Person', PersonSchema);
+	 *     var Boss = Person.discriminator('Boss', BossSchema);
+	 *
+	 * @param {String} name   discriminator model name
+	 * @param {Schema} schema discriminator model schema
+	 * @api public
+	 */
+
+	public function discriminator(name:String, schema:Schema) : Model;
+
+	/**
+	 * Sends `ensureIndex` commands to mongo for each index declared in the schema.
+	 *
+	 * ####Example:
+	 *
+	 *     Event.ensureIndexes(function (err) {
+	 *       if (err) return handleError(err);
+	 *     });
+	 *
+	 * After completion, an `index` event is emitted on this `Model` passing an error if one occurred.
+	 *
+	 * ####Example:
+	 *
+	 *     var eventSchema = new Schema({ thing: { type: 'string', unique: true }})
+	 *     var Event = mongoose.model('Event', eventSchema);
+	 *
+	 *     Event.on('index', function (err) {
+	 *       if (err) console.error(err); // error occurred during index creation
+	 *     })
+	 *
+	 * _NOTE: It is not recommended that you run this in production. Index creation may impact database performance depending on your load. Use with caution._
+	 *
+	 * The `ensureIndex` commands are not sent in parallel. This is to avoid the `MongoError: cannot add index with a background operation in progress` error. See [this ticket](https://github.com/Automattic/mongoose/issues/1365) for more information.
+	 *
+	 * @param {Function} [cb] optional callback
+	 * @return {Promise}
+	 * @api public
+	 */
+	public function ensureIndexes(?cb:Error->Void) : Promise;
 
 
 } // End of Model class
