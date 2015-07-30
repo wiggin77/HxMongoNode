@@ -1,9 +1,9 @@
 package js.node.mongoose;
 
-import haxe.ds.Either;
+import haxe.extern.EitherType;
 import js.node.mongodb.MongoCollection;
 
-typedef Id = {Either<String,Either<Int,{}>>};
+typedef Id = EitherType<String,EitherType<Int,{}>>;
 
 @:jsRequire("mongoose", "Model")
 extern class Model
@@ -25,7 +25,7 @@ extern class Model
 	 * @event `index`: Emitted after `Model#ensureIndexes` completes. If an error occurred it is passed with the event.
 	 * @api public
 	 */
-	public function new(doc:{}}, fields:{}}, skipId:Bool);
+	public function new(doc:{}, fields:{}, skipId:Bool);
 
 	/**
 	 * Saves this document.
@@ -67,7 +67,10 @@ extern class Model
 	 * @api public
 	 * @see middleware http://mongoosejs.com/docs/middleware.html
 	 */
-	public function save(?options:{}}, ?fn:Error->Model->Int->Void) : Promise;
+	@:overload(function (options:{}) : Promise {})
+	@:overload(function (fn:Error->Model->Int->Void) : Promise {})
+	@:overload(function () : Promise {})
+	public function save(options:{}, fn:Error->Model->Int->Void) : Promise;
 
 	/**
 	 * Signal that we desire an increment of this documents version.
@@ -109,8 +112,10 @@ extern class Model
 	 * @return {Promise} Promise
 	 * @api public
 	 */
-	public function remove(?options:{}, ?fn:Error->{}->Void) : Promise;
-
+	@:overload(function (options:{}) : Promise {})
+	@:overload(function (fn:Error->{}->Void) : Promise {})
+	@:overload(function () : Promise {})
+	public function remove(options:{}, fn:Error->{}->Void) : Promise;
 
 	/**
 	 * Returns another Model instance.
@@ -181,7 +186,8 @@ extern class Model
 	 * @return {Promise}
 	 * @api public
 	 */
-	public function ensureIndexes(?cb:Error->Void) : Promise;
+	@:overload(function () : Promise {})
+	public function ensureIndexes(cb:Error->Void) : Promise;
 
 	/**
 	 * Finds documents
@@ -223,11 +229,11 @@ extern class Model
 	 * @see promise #promise-js
 	 * @api public
 	 */
-	@:overload(function (conditions:{}) : Query {});
-	@:overload(function (conditions:{}, projection:{}) : Query {});
-	@:overload(function (conditions:{}, projection:{}, options:{}) : Query {});
-	@:overload(function (conditions:{}, projection:{}, callback:Error->{}) : Query {});
-	@:overload(function (conditions:{}, callback:Error->{}) : Query {});
+	@:overload(function (conditions:{}) : Query {})
+	@:overload(function (conditions:{}, projection:{}) : Query {})
+	@:overload(function (conditions:{}, projection:{}, options:{}) : Query {})
+	@:overload(function (conditions:{}, projection:{}, callback:Error->{}) : Query {})
+	@:overload(function (conditions:{}, callback:Error->{}) : Query {})
 	public function find(conditions:{}, projection:{}, options:{}, callback:Error->{}->Void) : Query;
 
 	/**
@@ -268,11 +274,11 @@ extern class Model
 	 * @see lean queries #query_Query-lean
 	 * @api public
 	 */
-	@:overload(function (id:Id) : Query {});
-	@:overload(function (id:Id, projection:{}) : Query {});
-	@:overload(function (id:Id, projection:{}, options:{}) : Query {});
-	@:overload(function (id:Id, projection:{}, callback:Error->{}) : Query {});
-	@:overload(function (id:Id, callback:Error->{}) : Query {});
+	@:overload(function (id:Id) : Query {})
+	@:overload(function (id:Id, projection:{}) : Query {})
+	@:overload(function (id:Id, projection:{}, options:{}) : Query {})
+	@:overload(function (id:Id, projection:{}, callback:Error->{}) : Query {})
+	@:overload(function (id:Id, callback:Error->{}) : Query {})
 	public function findById(id:Id, projection:{}, options:{}, callback:Error->{}->Void) : Query;
 
 	/**
@@ -312,12 +318,12 @@ extern class Model
 	 * @see lean queries #query_Query-lean
 	 * @api public
 	 */
-	@:overload(function (conditions:{}) : Query {});
-	@:overload(function (conditions:{}, projection:{}) : Query {});
-	@:overload(function (conditions:{}, projection:{}, options:{}) : Query {});
-	@:overload(function (conditions:{}, projection:{}, callback:Error->{}) : Query {});
-	@:overload(function (conditions:{}, callback:Error->{}) : Query {});
-	public function findOne(conditions:{}, projection:{}, options:{}, callback:Error->{}->Void) {
+	@:overload(function (conditions:{}) : Query {})
+	@:overload(function (conditions:{}, projection:{}) : Query {})
+	@:overload(function (conditions:{}, projection:{}, options:{}) : Query {})
+	@:overload(function (conditions:{}, projection:{}, callback:Error->{}) : Query {})
+	@:overload(function (conditions:{}, callback:Error->{}) : Query {})
+	public function findOne(conditions:{}, projection:{}, options:{}, callback:Error->{}->Void) : Query;
 
 	/**
 	 * Counts number of matching documents in a database collection.
@@ -334,7 +340,10 @@ extern class Model
 	 * @return {Query}
 	 * @api public
 	 */
-	public function count(?conditions:{}, ?callback:Error->Int->Void) : Query;
+	@:overload(function (conditions:{}) : Query {})
+	@:overload(function (callback:Error->Int->Void) : Query {})
+	@:overload(function () : Query {})
+	public function count(conditions:{}, callback:Error->Int->Void) : Query;
 
 	/**
 	 * Creates a Query for a `distinct` operation.
@@ -359,7 +368,10 @@ extern class Model
 	 * @return {Query}
 	 * @api public
 	 */
-	public function distinct(field:String, ?conditions:{}, ?callback:Error->Array<{}>->Void) : Query;
+	@:overload(function (field:String, conditions:{}) : Query {})
+	@:overload(function (field:String, callback:Error->Array<{}>->Void) : Query {})
+	@:overload(function (field:String) : Query {})
+	public function distinct(field:String, conditions:{}, callback:Error->Array<{}>->Void) : Query;
 
 	/**
 	 * Creates a Query, applies the passed conditions, and returns the Query.
@@ -384,7 +396,8 @@ extern class Model
 	 * @return {Query}
 	 * @api public
 	 */
-	public function where(path:String, ?val:Dynamic) : Query;
+	@:overload(function (path:String) : Query {})
+	public function where(path:String, val:Dynamic) : Query;
 
 	/**
 	 * Issues a mongodb findAndModify update command.
@@ -446,10 +459,426 @@ extern class Model
 	 * @see mongodb http://www.mongodb.org/display/DOCS/findAndModify+Command
 	 * @api public
 	 */
-	@:overload(function (conditions:{}, update:{}, options:{}) : Query {});
-	@:overload(function (conditions:{}, update:{}, callback:Error->{}->Void);
-	@:overload(function (conditions:{}, update:{}) : Query {});
+	@:overload(function (conditions:{}, update:{}, options:{}) : Query {})
+	@:overload(function (conditions:{}, update:{}, callback:Error->{}->Void) : Query {})
+	@:overload(function (conditions:{}, update:{}) : Query {})
 	public function findOneAndUpdate(conditions:{}, update:{}, options:{}, callback:Error->{}->Void) : Query;
 
+	/**
+	 * Issues a mongodb findAndModify update command by a document's _id field. `findByIdAndUpdate(id, ...)` is equivalent to `findOneAndUpdate({ _id: id }, ...)`.
+	 *
+	 * Finds a matching document, updates it according to the `update` arg, passing any `options`, and returns the found document (if any) to the callback. The query executes immediately if `callback` is passed else a Query object is returned.
+	 *
+	 * ####Options:
+	 *
+	 * - `new`: bool - true to return the modified document rather than the original. defaults to false
+	 * - `upsert`: bool - creates the object if it doesn't exist. defaults to false.
+	 * - `sort`: if multiple docs are found by the conditions, sets the sort order to choose which doc to update
+	 * - `select`: sets the document fields to return
+	 *
+	 * ####Examples:
+	 *
+	 *     A.findByIdAndUpdate(id, update, options, callback) // executes
+	 *     A.findByIdAndUpdate(id, update, options)  // returns Query
+	 *     A.findByIdAndUpdate(id, update, callback) // executes
+	 *     A.findByIdAndUpdate(id, update)           // returns Query
+	 *     A.findByIdAndUpdate()                     // returns Query
+	 *
+	 * ####Note:
+	 *
+	 * All top level update keys which are not `atomic` operation names are treated as set operations:
+	 *
+	 * ####Example:
+	 *
+	 *     Model.findByIdAndUpdate(id, { name: 'jason borne' }, options, callback)
+	 *
+	 *     // is sent as
+	 *     Model.findByIdAndUpdate(id, { $set: { name: 'jason borne' }}, options, callback)
+	 *
+	 * This helps prevent accidentally overwriting your document with `{ name: 'jason borne' }`.
+	 *
+	 * ####Note:
+	 *
+	 * Although values are cast to their appropriate types when using the findAndModify helpers, the following are *not* applied:
+	 *
+	 * - defaults
+	 * - setters
+	 * - validators
+	 * - middleware
+	 *
+	 * If you need those features, use the traditional approach of first retrieving the document.
+	 *
+	 *     Model.findById(id, function (err, doc) {
+	 *       if (err) ..
+	 *       doc.name = 'jason borne';
+	 *       doc.save(callback);
+	 *     })
+	 *
+	 * @param {Object|Number|String} id value of `_id` to query by
+	 * @param {Object} [update]
+	 * @param {Object} [options]
+	 * @param {Function} [callback]
+	 * @return {Query}
+	 * @see Model.findOneAndUpdate #model_Model.findOneAndUpdate
+	 * @see mongodb http://www.mongodb.org/display/DOCS/findAndModify+Command
+	 * @api public
+	 */
+	@:overload(function (id:Id, update:{}, options:{}) : Query {})
+	@:overload(function (id:Id, update:{}, callback:Error->{}->Void) : Query {})
+	@:overload(function (id:Id, update:{}) : Query {})
+	public function findByIdAndUpdate(id:Id, update:{}, options:{}, callback:Error->{}->Void) : Query;
+
+	/**
+	 * Issue a mongodb findAndModify remove command.
+	 *
+	 * Finds a matching document, removes it, passing the found document (if any) to the callback.
+	 *
+	 * Executes immediately if `callback` is passed else a Query object is returned.
+	 *
+	 * ####Options:
+	 *
+	 * - `sort`: if multiple docs are found by the conditions, sets the sort order to choose which doc to update
+	 * - `select`: sets the document fields to return
+	 *
+	 * ####Examples:
+	 *
+	 *     A.findOneAndRemove(conditions, options, callback) // executes
+	 *     A.findOneAndRemove(conditions, options)  // return Query
+	 *     A.findOneAndRemove(conditions, callback) // executes
+	 *     A.findOneAndRemove(conditions) // returns Query
+	 *     A.findOneAndRemove()           // returns Query
+	 *
+	 * Although values are cast to their appropriate types when using the findAndModify helpers, the following are *not* applied:
+	 *
+	 * - defaults
+	 * - setters
+	 * - validators
+	 * - middleware
+	 *
+	 * If you need those features, use the traditional approach of first retrieving the document.
+	 *
+	 *     Model.findById(id, function (err, doc) {
+	 *       if (err) ..
+	 *       doc.remove(callback);
+	 *     })
+	 *
+	 * @param {Object} conditions
+	 * @param {Object} [options]
+	 * @param {Function} [callback]
+	 * @return {Query}
+	 * @see mongodb http://www.mongodb.org/display/DOCS/findAndModify+Command
+	 * @api public
+	 */
+	@:overload(function (conditions:{}, options:{}) : Query {})
+	@:overload(function (conditions:{}, callback:Error->{}->Void) : Query {})
+	@:overload(function (conditions:{}) : Query {})
+	public function findOneAndRemove(conditions:{}, options:{}, callback:Error->{}->Void) : Query;
+
+	/**
+	 * Issue a mongodb findAndModify remove command by a document's _id field. `findByIdAndRemove(id, ...)` is equivalent to `findOneAndRemove({ _id: id }, ...)`.
+	 *
+	 * Finds a matching document, removes it, passing the found document (if any) to the callback.
+	 *
+	 * Executes immediately if `callback` is passed, else a `Query` object is returned.
+	 *
+	 * ####Options:
+	 *
+	 * - `sort`: if multiple docs are found by the conditions, sets the sort order to choose which doc to update
+	 * - `select`: sets the document fields to return
+	 *
+	 * ####Examples:
+	 *
+	 *     A.findByIdAndRemove(id, options, callback) // executes
+	 *     A.findByIdAndRemove(id, options)  // return Query
+	 *     A.findByIdAndRemove(id, callback) // executes
+	 *     A.findByIdAndRemove(id) // returns Query
+	 *     A.findByIdAndRemove()           // returns Query
+	 *
+	 * @param {Object|Number|String} id value of `_id` to query by
+	 * @param {Object} [options]
+	 * @param {Function} [callback]
+	 * @return {Query}
+	 * @see Model.findOneAndRemove #model_Model.findOneAndRemove
+	 * @see mongodb http://www.mongodb.org/display/DOCS/findAndModify+Command
+	 */
+	@:overload(function (id:Id, options:{}) : Query {})
+	@:overload(function (id:Id, callback:Error->{}->Void) : Query {})
+	@:overload(function (id:Id) : Query {})
+	public function findByIdAndRemove(id:Id, options:{}, callback:Error->{}->Void) : Query;
+
+	/**
+	 * Shortcut for creating a new Document that is automatically saved to the db if valid.
+	 *
+	 * ####Example:
+	 *
+	 *     // pass individual docs
+	 *     Candy.create({ type: 'jelly bean' }, { type: 'snickers' }, function (err, jellybean, snickers) {
+	 *       if (err) // ...
+	 *     });
+	 *
+	 *     // pass an array
+	 *     var array = [{ type: 'jelly bean' }, { type: 'snickers' }];
+	 *     Candy.create(array, function (err, candies) {
+	 *       if (err) // ...
+	 *
+	 *       var jellybean = candies[0];
+	 *       var snickers = candies[1];
+	 *       // ...
+	 *     });
+	 *
+	 *     // callback is optional; use the returned promise if you like:
+	 *     var promise = Candy.create({ type: 'jawbreaker' });
+	 *     promise.then(function (jawbreaker) {
+	 *       // ...
+	 *     })
+	 *
+	 * @param {Array|Object...} doc(s)
+	 * @param {Function} [fn] callback
+	 * @return {Promise}
+	 * @api public
+	 */
+	@:overload(function (doc:{}) : Promise {})
+	@:overload(function (doc:Array<{}>, fn:Error->Array<{}>->Void) : Promise {})
+	@:overload(function (doc:Array<{}>) : Promise {})
+	public function create(doc:{}, fn:Error->{}->Void) : Promise;
+
+	/**
+	 * Shortcut for creating a new Document from existing raw data, pre-saved in the DB.
+	 * The document returned has no paths marked as modified initially.
+	 *
+	 * ####Example:
+	 *
+	 *     // hydrate previous data into a Mongoose document
+	 *     var mongooseCandy = Candy.hydrate({ _id: '54108337212ffb6d459f854c', type: 'jelly bean' });
+	 *
+	 * @param {Object} obj
+	 * @return {Document}
+	 * @api public
+	 */
+	public function hydrate(obj:{}) : Model;
+
+	/**
+	 * Updates documents in the database without returning them.
+	 *
+	 * ####Examples:
+	 *
+	 *     MyModel.update({ age: { $gt: 18 } }, { oldEnough: true }, fn);
+	 *     MyModel.update({ name: 'Tobi' }, { ferret: true }, { multi: true }, function (err, raw) {
+	 *       if (err) return handleError(err);
+	 *       console.log('The raw response from Mongo was ', raw);
+	 *     });
+	 *
+	 * ####Valid options:
+	 *
+	 *  - `safe` (boolean) safe mode (defaults to value set in schema (true))
+	 *  - `upsert` (boolean) whether to create the doc if it doesn't match (false)
+	 *  - `multi` (boolean) whether multiple documents should be updated (false)
+	 *  - `strict` (boolean) overrides the `strict` option for this update
+	 *  - `overwrite` (boolean) disables update-only mode, allowing you to overwrite the doc (false)
+	 *
+	 * All `update` values are cast to their appropriate SchemaTypes before being sent.
+	 *
+	 * The `callback` function receives `(err, rawResponse)`.
+	 *
+	 * - `err` is the error if any occurred
+	 * - `rawResponse` is the full response from Mongo
+	 *
+	 * ####Note:
+	 *
+	 * All top level keys which are not `atomic` operation names are treated as set operations:
+	 *
+	 * ####Example:
+	 *
+	 *     var query = { name: 'borne' };
+	 *     Model.update(query, { name: 'jason borne' }, options, callback)
+	 *
+	 *     // is sent as
+	 *     Model.update(query, { $set: { name: 'jason borne' }}, options, callback)
+	 *     // if overwrite option is false. If overwrite is true, sent without the $set wrapper.
+	 *
+	 * This helps prevent accidentally overwriting all documents in your collection with `{ name: 'jason borne' }`.
+	 *
+	 * ####Note:
+	 *
+	 * Be careful to not use an existing model instance for the update clause (this won't work and can cause weird behavior like infinite loops). Also, ensure that the update clause does not have an _id property, which causes Mongo to return a "Mod on _id not allowed" error.
+	 *
+	 * ####Note:
+	 *
+	 * To update documents without waiting for a response from MongoDB, do not pass a `callback`, then call `exec` on the returned [Query](#query-js):
+	 *
+	 *     Comment.update({ _id: id }, { $set: { text: 'changed' }}).exec();
+	 *
+	 * ####Note:
+	 *
+	 * Although values are casted to their appropriate types when using update, the following are *not* applied:
+	 *
+	 * - defaults
+	 * - setters
+	 * - validators
+	 * - middleware
+	 *
+	 * If you need those features, use the traditional approach of first retrieving the document.
+	 *
+	 *     Model.findOne({ name: 'borne' }, function (err, doc) {
+	 *       if (err) ..
+	 *       doc.name = 'jason borne';
+	 *       doc.save(callback);
+	 *     })
+	 *
+	 * @see strict http://mongoosejs.com/docs/guide.html#strict
+	 * @see response http://docs.mongodb.org/v2.6/reference/command/update/#output
+	 * @param {Object} conditions
+	 * @param {Object} doc
+	 * @param {Object} [options]
+	 * @param {Function} [callback]
+	 * @return {Query}
+	 * @api public
+	 */
+	@:overload(function (conditions:{}, doc:{}, options:{}) : Query {})
+	@:overload(function (conditions:{}, doc:{}, callback:Error->{}->Void) : Query {})
+	public function update(conditions:{}, doc:{}, options:{}, callback:Error->{}->Void) : Query;
+
+	/**
+	 * Executes a mapReduce command.
+	 *
+	 * `o` is an object specifying all mapReduce options as well as the map and reduce functions. All options are delegated to the driver implementation. See [node-mongodb-native mapReduce() documentation](http://mongodb.github.io/node-mongodb-native/api-generated/collection.html#mapreduce) for more detail about options.
+	 *
+	 * ####Example:
+	 *
+	 *     var o = {};
+	 *     o.map = function () { emit(this.name, 1) }
+	 *     o.reduce = function (k, vals) { return vals.length }
+	 *     User.mapReduce(o, function (err, results) {
+	 *       console.log(results)
+	 *     })
+	 *
+	 * ####Other options:
+	 *
+	 * - `query` {Object} query filter object.
+	 * - `sort` {Object} sort input objects using this key
+	 * - `limit` {Number} max number of documents
+	 * - `keeptemp` {Boolean, default:false} keep temporary data
+	 * - `finalize` {Function} finalize function
+	 * - `scope` {Object} scope variables exposed to map/reduce/finalize during execution
+	 * - `jsMode` {Boolean, default:false} it is possible to make the execution stay in JS. Provided in MongoDB > 2.0.X
+	 * - `verbose` {Boolean, default:false} provide statistics on job execution time.
+	 * - `readPreference` {String}
+	 * - `out*` {Object, default: {inline:1}} sets the output target for the map reduce job.
+	 *
+	 * ####* out options:
+	 *
+	 * - `{inline:1}` the results are returned in an array
+	 * - `{replace: 'collectionName'}` add the results to collectionName: the results replace the collection
+	 * - `{reduce: 'collectionName'}` add the results to collectionName: if dups are detected, uses the reducer / finalize functions
+	 * - `{merge: 'collectionName'}` add the results to collectionName: if dups exist the new docs overwrite the old
+	 *
+	 * If `options.out` is set to `replace`, `merge`, or `reduce`, a Model instance is returned that can be used for further querying. Queries run against this model are all executed with the `lean` option; meaning only the js object is returned and no Mongoose magic is applied (getters, setters, etc).
+	 *
+	 * ####Example:
+	 *
+	 *     var o = {};
+	 *     o.map = function () { emit(this.name, 1) }
+	 *     o.reduce = function (k, vals) { return vals.length }
+	 *     o.out = { replace: 'createdCollectionNameForResults' }
+	 *     o.verbose = true;
+	 *
+	 *     User.mapReduce(o, function (err, model, stats) {
+	 *       console.log('map reduce took %d ms', stats.processtime)
+	 *       model.find().where('value').gt(10).exec(function (err, docs) {
+	 *         console.log(docs);
+	 *       });
+	 *     })
+	 *
+	 *     // a promise is returned so you may instead write
+	 *     var promise = User.mapReduce(o);
+	 *     promise.then(function (model, stats) {
+	 *       console.log('map reduce took %d ms', stats.processtime)
+	 *       return model.find().where('value').gt(10).exec();
+	 *     }).then(function (docs) {
+	 *        console.log(docs);
+	 *     }).then(null, handleError).end()
+	 *
+	 * @param {Object} o an object specifying map-reduce options
+	 * @param {Function} [callback] optional callback
+	 * @see http://www.mongodb.org/display/DOCS/MapReduce
+	 * @return {Promise}
+	 * @api public
+	 */
+	@:overload(function (o:{}) : Promise {}) 
+	public function mapReduce(o:{}, callback:Error->{}->Void) : Promise;
+
+	/**
+	 * geoNear support for Mongoose
+	 *
+	 * ####Options:
+	 * - `lean` {Boolean} return the raw object
+	 * - All options supported by the driver are also supported
+	 *
+	 * ####Example:
+	 *
+	 *     // Legacy point
+	 *     Model.geoNear([1,3], { maxDistance : 5, spherical : true }, function(err, results, stats) {
+	 *        console.log(results);
+	 *     });
+	 *
+	 *     // geoJson
+	 *     var point = { type : "Point", coordinates : [9,9] };
+	 *     Model.geoNear(point, { maxDistance : 5, spherical : true }, function(err, results, stats) {
+	 *        console.log(results);
+	 *     });
+	 *
+	 * @param {Object/Array} GeoJSON point or legacy coordinate pair [x,y] to search near
+	 * @param {Object} options for the qurery
+	 * @param {Function} [callback] optional callback for the query
+	 * @return {Promise}
+	 * @see http://docs.mongodb.org/manual/core/2dsphere/
+	 * @see http://mongodb.github.io/node-mongodb-native/api-generated/collection.html?highlight=geonear#geoNear
+	 * @api public
+	 */
+	@:overload(function (near:{}, options:{}) : Promise {})
+	public function geoNear(near:{}, options:{}, callback:Error->{}->{}->Void) : Promise;
+
+	/**
+	 * Performs [aggregations](http://docs.mongodb.org/manual/applications/aggregation/) on the models collection.
+	 *
+	 * If a `callback` is passed, the `aggregate` is executed and a `Promise` is returned. If a callback is not passed, the `aggregate` itself is returned.
+	 *
+	 * ####Example:
+	 *
+	 *     // Find the max balance of all accounts
+	 *     Users.aggregate(
+	 *         { $group: { _id: null, maxBalance: { $max: '$balance' }}}
+	 *       , { $project: { _id: 0, maxBalance: 1 }}
+	 *       , function (err, res) {
+	 *       if (err) return handleError(err);
+	 *       console.log(res); // [ { maxBalance: 98000 } ]
+	 *     });
+	 *
+	 *     // Or use the aggregation pipeline builder.
+	 *     Users.aggregate()
+	 *       .group({ _id: null, maxBalance: { $max: '$balance' } })
+	 *       .select('-id maxBalance')
+	 *       .exec(function (err, res) {
+	 *         if (err) return handleError(err);
+	 *         console.log(res); // [ { maxBalance: 98 } ]
+	 *     });
+	 *
+	 * ####NOTE:
+	 *
+	 * - Arguments are not cast to the model's schema because `$project` operators allow redefining the "shape" of the documents at any stage of the pipeline, which may leave documents in an incompatible format.
+	 * - The documents returned are plain javascript objects, not mongoose documents (since any shape of document can be returned).
+	 * - Requires MongoDB >= 2.1
+	 *
+	 * @see Aggregate #aggregate_Aggregate
+	 * @see MongoDB http://docs.mongodb.org/manual/applications/aggregation/
+	 * @param {Object|Array} [...] aggregation pipeline operator(s) or operator array
+	 * @param {Function} [callback]
+	 * @return {Aggregate|Promise}
+	 * @api public
+	 */
+	@:overload(function (op:Array<{}>, callback:Error->{}->Void) : Promise {})
+	@:overload(function (op:{}) : {} {})
+	@:overload(function (op:Array<{}>) : {} {})
+	public function aggregate(op:{}, callback:Error->{}->Void) : Promise;
 
 } // End of Model class
