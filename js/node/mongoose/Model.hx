@@ -881,4 +881,97 @@ extern class Model
 	@:overload(function (op:Array<{}>) : {} {})
 	public function aggregate(op:{}, callback:Error->{}->Void) : Promise;
 
+	/**
+	 * Implements `$geoSearch` functionality for Mongoose
+	 *
+	 * ####Example:
+	 *
+	 *     var options = { near: [10, 10], maxDistance: 5 };
+	 *     Locations.geoSearch({ type : "house" }, options, function(err, res) {
+	 *       console.log(res);
+	 *     });
+	 *
+	 * ####Options:
+	 * - `near` {Array} x,y point to search for
+	 * - `maxDistance` {Number} the maximum distance from the point near that a result can be
+	 * - `limit` {Number} The maximum number of results to return
+	 * - `lean` {Boolean} return the raw object instead of the Mongoose Model
+	 *
+	 * @param {Object} condition an object that specifies the match condition (required)
+	 * @param {Object} options for the geoSearch, some (near, maxDistance) are required
+	 * @param {Function} [callback] optional callback
+	 * @return {Promise}
+	 * @see http://docs.mongodb.org/manual/reference/command/geoSearch/
+	 * @see http://docs.mongodb.org/manual/core/geohaystack/
+	 * @api public
+	 */
+	@:overload(function (conditions:{}, options:{}) : Promise {})
+	public function geoSearch(conditions:{}, options:{}, callback:Error->{}->Void) : Promise;
+
+	/**
+	 * Populates document references.
+	 *
+	 * ####Available options:
+	 *
+	 * - path: space delimited path(s) to populate
+	 * - select: optional fields to select
+	 * - match: optional query conditions to match
+	 * - model: optional name of the model to use for population
+	 * - options: optional query options like sort, limit, etc
+	 *
+	 * ####Examples:
+	 *
+	 *     // populates a single object
+	 *     User.findById(id, function (err, user) {
+	 *       var opts = [
+	 *           { path: 'company', match: { x: 1 }, select: 'name' }
+	 *         , { path: 'notes', options: { limit: 10 }, model: 'override' }
+	 *       ]
+	 *
+	 *       User.populate(user, opts, function (err, user) {
+	 *         console.log(user);
+	 *       })
+	 *     })
+	 *
+	 *     // populates an array of objects
+	 *     User.find(match, function (err, users) {
+	 *       var opts = [{ path: 'company', match: { x: 1 }, select: 'name' }]
+	 *
+	 *       var promise = User.populate(users, opts);
+	 *       promise.then(console.log).end();
+	 *     })
+	 *
+	 *     // imagine a Weapon model exists with two saved documents:
+	 *     //   { _id: 389, name: 'whip' }
+	 *     //   { _id: 8921, name: 'boomerang' }
+	 *
+	 *     var user = { name: 'Indiana Jones', weapon: 389 }
+	 *     Weapon.populate(user, { path: 'weapon', model: 'Weapon' }, function (err, user) {
+	 *       console.log(user.weapon.name) // whip
+	 *     })
+	 *
+	 *     // populate many plain objects
+	 *     var users = [{ name: 'Indiana Jones', weapon: 389 }]
+	 *     users.push({ name: 'Batman', weapon: 8921 })
+	 *     Weapon.populate(users, { path: 'weapon' }, function (err, users) {
+	 *       users.forEach(function (user) {
+	 *         console.log('%s uses a %s', users.name, user.weapon.name)
+	 *         // Indiana Jones uses a whip
+	 *         // Batman uses a boomerang
+	 *       })
+	 *     })
+	 *     // Note that we didn't need to specify the Weapon model because
+	 *     // we were already using it's populate() method.
+	 *
+	 * @param {Document|Array} docs Either a single document or array of documents to populate.
+	 * @param {Object} options A hash of key/val (path, options) used for population.
+	 * @param {Function} [cb(err,doc)] Optional callback, executed upon completion. Receives `err` and the `doc(s)`.
+	 * @return {Promise}
+	 * @api public
+	 */
+	@:overload(function (docs:Array<{}>, paths:{}, cb:Error->Array<{}>->Void) : Promise {})
+	@:overload(function (docs:Array<{}>, paths:{}) : Promise {})
+	@:overload(function (docs:{}, paths:{}) : Promise {})
+	public function populate(docs:{}, paths:{}, cb:Error->{}->Void) : Promise;
+
 } // End of Model class
