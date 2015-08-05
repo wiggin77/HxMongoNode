@@ -4,36 +4,55 @@ import haxe.Constraints.Function;
 import haxe.extern.EitherType;
 import haxe.extern.Rest;
 import js.node.mongodb.ReadPreference;
+import js.node.mongoose.Promise.Reason;
 
 typedef Number = EitherType<Int,Float>;
 typedef Geometry = {type:String, coordinates:Array<Number>};
 typedef QueryInfo = {collectionName:String, conditions:{}, options:{}, doc:{}};
+typedef TraceFuncCallback = Error->Dynamic->Float;
+typedef TraceFunc = {}->QueryInfo->{}->TraceFuncCallback;
+
 
 @:jsRequire("mongoose", "Query")
 extern class Query
 {
 	/**
-	 * Converts this query to a constructor function with all arguments and options retained.
+	 * Converts this query to a customized, reusable query constructor with all arguments and options retained.
 	 *
 	 * ####Example
 	 *
-	 *     // Create a query that will read documents with a "video" category from
-	 *     // `aCollection` on the primary node in the replica-set unless it is down,
-	 *     // in which case we'll read from a secondary node.
-	 *     var query = mquery({ category: 'video' })
-	 *     query.setOptions({ collection: aCollection, read: 'primaryPreferred' });
+	 *     // Create a query for adventure movies and read from the primary
+	 *     // node in the replica-set unless it is down, in which case we'll
+	 *     // read from a secondary node.
+	 *     var query = Movie.find({ tags: 'adventure' }).read('primaryPreferred');
 	 *
-	 *     // create a constructor based off these settings
-	 *     var Video = query.toConstructor();
+	 *     // create a custom Query constructor based off these settings
+	 *     var Adventure = query.toConstructor();
 	 *
-	 *     // Video is now a subclass of mquery() and works the same way but with the
+	 *     // Adventure is now a subclass of mongoose.Query and works the same way but with the
 	 *     // default query parameters and options set.
+	 *     Adventure().exec(callback)
 	 *
-	 *     // run a query with the previous settings but filter for movies with names
-	 *     // that start with "Life".
-	 *     Video().where({ name: /^Life/ }).exec(cb);
+	 *     // further narrow down our query results while still using the previous settings
+	 *     Adventure().where({ name: /^Life/ }).exec(callback);
 	 *
-	 * @return {Query} new Query
+	 *     // since Adventure is a stand-alone constructor we can also add our own
+	 *     // helper methods and getters without impacting global queries
+	 *     Adventure.prototype.startsWith = function (prefix) {
+	 *       this.where({ name: new RegExp('^' + prefix) })
+	 *       return this;
+	 *     }
+	 *     Object.defineProperty(Adventure.prototype, 'highlyRated', {
+	 *       get: function () {
+	 *         this.where({ rating: { $gt: 4.5 }});
+	 *         return this;
+	 *       }
+	 *     })
+	 *     Adventure().highlyRated.startsWith('Life').exec(callback)
+	 *
+	 * New in 3.7.3
+	 *
+	 * @return {Query} subclass-of-Query
 	 * @api public
 	 */	
 	public function toConstructor() : Query;
@@ -793,7 +812,23 @@ extern class Query
 	public function hint(val:{}) : Query;
 
 	/**
-	 * Sets the readPreference option for the query.
+	 * Determines the MongoDB nodes from which to read.
+	 *
+	 * ####Preferences:
+	 *
+	 *     primary - (default) Read from primary only. Operations will produce an error if primary is unavailable. Cannot be combined with tags.
+	 *     secondary            Read from secondary if available, otherwise error.
+	 *     primaryPreferred     Read from primary if available, otherwise a secondary.
+	 *     secondaryPreferred   Read from a secondary if available, otherwise read from the primary.
+	 *     nearest              All operations read from among the nearest candidates, but unlike other modes, this option will include both the primary and all secondaries in the random selection.
+	 *
+	 * Aliases
+	 *
+	 *     p   primary
+	 *     pp  primaryPreferred
+	 *     s   secondary
+	 *     sp  secondaryPreferred
+	 *     n   nearest
 	 *
 	 * ####Example:
 	 *
@@ -812,35 +847,73 @@ extern class Query
 	 *     new Query().read('nearest')
 	 *     new Query().read('n')  // same as nearest
 	 *
-	 *     // you can also use mongodb.ReadPreference class to also specify tags
-	 *     new Query().read(mongodb.ReadPreference('secondary', [{ dc:'sf', s: 1 },{ dc:'ma', s: 2 }]))
+	 *     // read from secondaries with matching tags
+	 *     new Query().read('s', [{ dc:'sf', s: 1 },{ dc:'ma', s: 2 }])
 	 *
-	 * ####Preferences:
+	 * Read more about how to use read preferrences [here](http://docs.mongodb.org/manual/applications/replication/#read-preference) and [here](http://mongodb.github.com/node-mongodb-native/driver-articles/anintroductionto1_1and2_2.html#read-preferences).
 	 *
-	 *     primary - (default)  Read from primary only. Operations will produce an error if primary is unavailable. Cannot be combined with tags.
-	 *     secondary            Read from secondary if available, otherwise error.
-	 *     primaryPreferred     Read from primary if available, otherwise a secondary.
-	 *     secondaryPreferred   Read from a secondary if available, otherwise read from the primary.
-	 *     nearest              All operations read from among the nearest candidates, but unlike other modes, this option will include both the primary and all secondaries in the random selection.
-	 *
-	 * Aliases
-	 *
-	 *     p   primary
-	 *     pp  primaryPreferred
-	 *     s   secondary
-	 *     sp  secondaryPreferred
-	 *     n   nearest
-	 *
-	 * Read more about how to use read preferences [here](http://docs.mongodb.org/manual/applications/replication/#read-preference) and [here](http://mongodb.github.com/node-mongodb-native/driver-articles/anintroductionto1_1and2_2.html#read-preferences).
-	 *
-	 * @param {String|ReadPreference} pref one of the listed preference options or their aliases
+	 * @method read
+	 * @memberOf Query
+	 * @param {String} pref one of the listed preference options or aliases
+	 * @param {Array} [tags] optional tags for this query
 	 * @see mongodb http://docs.mongodb.org/manual/applications/replication/#read-preference
 	 * @see driver http://mongodb.github.com/node-mongodb-native/driver-articles/anintroductionto1_1and2_2.html#read-preferences
 	 * @return {Query} this
 	 * @api public
 	 */
-	@:overload(function (pref:ReadPreference) : Query {})
-	public function read(pref:String) : Query;
+	@:overload(function (pref:ReadPreference, ?tags:Array<String>) : Query {})
+	public function read(pref:String, ?tags:Array<String>) : Query;
+
+	/**
+	 * Returns the current query conditions as a JSON object.
+	 *
+	 * ####Example:
+	 *
+	 *     var query = new Query();
+	 *     query.find({ a: 1 }).where('b').gt(2);
+	 *     query.getQuery(); // { a: 1, b: { $gt: 2 } }
+	 *
+	 * @return {Object} current query conditions
+	 * @api public
+	 */
+	public function getQuery() : {};
+
+	/**
+	 * Returns the current update operations as a JSON object.
+	 *
+	 * ####Example:
+	 *
+	 *     var query = new Query();
+	 *     query.update({}, { $set: { a: 5 } });
+	 *     query.getUpdate(); // { $set: { a: 5 } }
+	 *
+	 * @return {Object} current update operations
+	 * @api public
+	 */
+	public function getUpdate() : {};
+
+	/**
+	 * Sets the lean option.
+	 *
+	 * Documents returned from queries with the `lean` option enabled are plain javascript objects, not [MongooseDocuments](#document-js). They have no `save` method, getters/setters or other Mongoose magic applied.
+	 *
+	 * ####Example:
+	 *
+	 *     new Query().lean() // true
+	 *     new Query().lean(true)
+	 *     new Query().lean(false)
+	 *
+	 *     Model.find().lean().exec(function (err, docs) {
+	 *       docs[0] instanceof mongoose.Document // false
+	 *     });
+	 *
+	 * This is a [great](https://groups.google.com/forum/#!topic/mongoose-orm/u2_DzDydcnA/discussion) option in high-performance read-only scenarios, especially when combined with [stream](#query_Query-stream).
+	 *
+	 * @param {Boolean} bool defaults to true
+	 * @return {Query} this
+	 * @api public
+	 */
+	public function lean(?v:Bool) : Query;
 
 	/**
 	 * Sets tailable option.
@@ -875,13 +948,11 @@ extern class Query
 	/**
 	 * Finds documents.
 	 *
-	 * Passing a `callback` executes the query.
+	 * When no `callback` is passed, the query is not executed. When the query is executed, the result will be an array of documents.
 	 *
 	 * ####Example
 	 *
-	 *     query.find()
-	 *     query.find(callback)
-	 *     query.find({ name: 'Burning Lights' }, callback)
+	 *     query.find({ name: 'Los Pollos Hermanos' }).find(callback)
 	 *
 	 * @param {Object} [criteria] mongodb selector
 	 * @param {Function} [callback]
@@ -889,47 +960,45 @@ extern class Query
 	 * @api public
 	 */
 	@:overload(function (callback:Error->{}->Void) : Query {}) 
-	@:overload(function (criteria:{}) : Query {}) 
-	public function find(criteria:{}, callback:Error->{}->Void) : Query;
+	@:overload(function (conditions:{}) : Query {}) 
+	public function find(conditions:{}, callback:Error->{}->Void) : Query;
 
 	/**
-	 * Executes the query as a findOne() operation.
+	 * Declares the query a findOne operation. When executed, the first found document is passed to the callback.
 	 *
-	 * Passing a `callback` executes the query.
+	 * Passing a `callback` executes the query. The result of the query is a single document.
 	 *
 	 * ####Example
 	 *
-	 *     query.findOne().where('name', /^Burning/);
-	 *
-	 *     query.findOne({ name: /^Burning/ })
-	 *
-	 *     query.findOne({ name: /^Burning/ }, callback); // executes
-	 *
-	 *     query.findOne(function (err, doc) {
+	 *     var query  = Kitten.where({ color: 'white' });
+	 *     query.findOne(function (err, kitten) {
 	 *       if (err) return handleError(err);
-	 *       if (doc) {
+	 *       if (kitten) {
 	 *         // doc may be null if no document matched
-	 *
 	 *       }
 	 *     });
 	 *
 	 * @param {Object|Query} [criteria] mongodb selector
+	 * @param {Object} [projection] optional fields to return (http://bit.ly/1HotzBo)
 	 * @param {Function} [callback]
 	 * @return {Query} this
+	 * @see findOne http://docs.mongodb.org/manual/reference/method/db.collection.findOne/
 	 * @api public
 	 */
 	@:overload(function (callback:Error->{}->Void) : Query {}) 
-	@:overload(function (criteria:{}) : Query {}) 
-	public function findOne(criteria:{}, callback:Error->{}->Void) : Query;
+	@:overload(function (options:{}, callback:Error->{}->Void) : Query {}) 
+	@:overload(function (projection:{}, options:{}, callback:Error->{}->Void) : Query {}) 
+	@:overload(function (conditions:Query, projection:{}, options:{}, callback:Error->{}->Void) : Query {}) 
+	public function findOne(conditions:{}, projection:{}, options:{}, callback:Error->{}->Void) : Query;
 
 	/**
-	 * Exectues the query as a count() operation.
+	 * Specifying this query as a `count` query.
 	 *
 	 * Passing a `callback` executes the query.
 	 *
-	 * ####Example
+	 * ####Example:
 	 *
-	 *     query.count().where('color', 'black').exec(callback);
+	 *     var countQuery = model.where({ 'color': 'black' }).count();
 	 *
 	 *     query.count({ color: 'black' }).count(callback)
 	 *
@@ -943,42 +1012,42 @@ extern class Query
 	 * @param {Object} [criteria] mongodb selector
 	 * @param {Function} [callback]
 	 * @return {Query} this
-	 * @see mongodb http://www.mongodb.org/display/DOCS/Aggregation#Aggregation-Count
+	 * @see count http://docs.mongodb.org/manual/reference/method/db.collection.count/
 	 * @api public
 	 */
 	@:overload(function () : Query {}) 
 	@:overload(function (callback:Error->Int->Void) : Query {}) 
-	@:overload(function (criteria:{}) : Query {}) 
-	public function count(criteria:{}, callback:Error->Int->Void) : Query;
+	@:overload(function (conditions:{}) : Query {}) 
+	public function count(conditions:{}, callback:Error->Int->Void) : Query;
 
 	/**
-	 * Declares or executes a distinct() operation.
+	 * Declares or executes a distict() operation.
 	 *
 	 * Passing a `callback` executes the query.
 	 *
 	 * ####Example
 	 *
-	 *     distinct(criteria, field, fn)
-	 *     distinct(criteria, field)
-	 *     distinct(field, fn)
+	 *     distinct(field, conditions, callback)
+	 *     distinct(field, conditions)
+	 *     distinct(field, callback)
 	 *     distinct(field)
-	 *     distinct(fn)
+	 *     distinct(callback)
 	 *     distinct()
 	 *
-	 * @param {Object|Query} [criteria]
 	 * @param {String} [field]
+	 * @param {Object|Query} [criteria]
 	 * @param {Function} [callback]
 	 * @return {Query} this
-	 * @see mongodb http://www.mongodb.org/display/DOCS/Aggregation#Aggregation-Distinct
+	 * @see distinct http://docs.mongodb.org/manual/reference/method/db.collection.distinct/
 	 * @api public
 	 */
 	@:overload(function () : Query {})
-	@:overload(function (criteria:Query, field:String, callback:Error->{}->Void) : Query {})
-	@:overload(function (criteria:Query, callback:Error->{}->Void) : Query {})
-	@:overload(function (criteria:{}, callback:Error->{}->Void) : Query {})
+	@:overload(function (field:String, conditions:Query, callback:Error->{}->Void) : Query {})
+	@:overload(function (conditions:Query, callback:Error->{}->Void) : Query {})
+	@:overload(function (conditions:{}, callback:Error->{}->Void) : Query {})
 	@:overload(function (field:String, callback:Error->{}->Void) : Query {})
 	@:overload(function (callback:Error->{}->Void) : Query {})
-	public function distinct(criteria:{}, field:String, callback:Error->{}->Void) : Query;
+	public function distinct(field:String, conditions:{}, callback:Error->{}->Void) : Query;
 
 	/**
 	 * Declare and/or execute this query as an update() operation.
@@ -1103,11 +1172,11 @@ extern class Query
 	 * @api public
 	 */
 	@:overload(function () : Query {}) 
-	@:overload(function (criteria:{}) : Query {}) 
-	@:overload(function (criteria:Query) : Query {}) 
+	@:overload(function (cond:{}) : Query {}) 
+	@:overload(function (cond:Query) : Query {}) 
 	@:overload(function (callback:Error->{}->Void) : Query {}) 
-	@:overload(function (criteria:Query, callback:Error->{}->Void) : Query {}) 
-	public function remove(criteria:{}, callback:Error->{}->Void) : Query;
+	@:overload(function (cond:Query, callback:Error->{}->Void) : Query {}) 
+	public function remove(cond:{}, callback:Error->{}->Void) : Query;
 
 	/**
 	 * Issues a mongodb [findAndModify](http://www.mongodb.org/display/DOCS/findAndModify+Command) update command.
@@ -1202,8 +1271,47 @@ extern class Query
 	 * @return {Query} this
 	 * @api public
 	 */
-	//public function setTraceFunction(traceFunction:) : Query;
+	public function setTraceFunction(traceFunction:TraceFunc) : Query;
 
+	/**
+	 * Executes the query
+	 *
+	 * ####Examples:
+	 *
+	 *     var promise = query.exec();
+	 *     var promise = query.exec('update');
+	 *
+	 *     query.exec(callback);
+	 *     query.exec('find', callback);
+	 *
+	 * @param {String|Function} [operation]
+	 * @param {Function} [callback]
+	 * @return {Promise}
+	 * @api public
+	 */
+	@:overload(function (callback:Error->{}->Void) : Promise {})
+	@:overload(function (op:String) : Promise {})
+	@:overload(function (op:Function) : Promise {})
+	@:overload(function (op:Function, callback:Error->{}->Void) : Promise {})
+	public function exec(op:String, callback:Error->{}->Void) : Promise;
 
+	/**
+	 * Executes the query returning a `Promise` which will be
+	 * resolved with either the doc(s) or rejected with the error.
+	 *
+	 * @param {Function} [resolve]
+	 * @param {Function} [reject]
+	 * @return {Promise}
+	 * @api public
+	 */
+	public function then(resolve:Rest<Dynamic>->Void, reject:Reason->Void) : Promise;
+
+	/**
+	 * Returns a stream for the given find query.
+	 *
+	 * @throws Error if operation is not a find
+	 * @returns {Stream} Node 0.8 style
+	 */
+	public function stream(?streamOptions:{}) : js.node.stream.Readable;
 
 } // End of Query class
