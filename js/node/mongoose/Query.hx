@@ -5,6 +5,7 @@ import haxe.extern.EitherType;
 import haxe.extern.Rest;
 import js.node.mongodb.ReadPreference;
 import js.node.mongoose.Promise.Reason;
+import js.node.stream.Readable;
 
 typedef Number = EitherType<Int,Float>;
 typedef Geometry = {type:String, coordinates:Array<Number>};
@@ -916,11 +917,11 @@ extern class Query
 	public function lean(?v:Bool) : Query;
 
 	/**
-	 * Sets tailable option.
+	 * Sets the tailable option (for use with capped collections).
 	 *
 	 * ####Example
 	 *
-	 *     query.tailable() <== true
+	 *     query.tailable() // true
 	 *     query.tailable(true)
 	 *     query.tailable(false)
 	 *
@@ -928,10 +929,11 @@ extern class Query
 	 *
 	 * Cannot be used with `distinct()`
 	 *
-	 * @param {Boolean} v defaults to true
-	 * @see mongodb http://www.mongodb.org/display/DOCS/Tailable+Cursors
+	 * @param {Boolean} bool defaults to true
+	 * @see tailable http://docs.mongodb.org/manual/tutorial/create-tailable-cursor/
 	 * @api public
 	 */
+	Query.prototype.tailable = function (val, opts) {
 	public function tailable(?b:Bool) : Query;
 
 	/**
@@ -1214,6 +1216,9 @@ extern class Query
 	@:overload(function (callback:Error->{}->Void) : Query {})
 	@:overload(function (doc:{}) : Query {})
 	@:overload(function (doc:{}, callback:Error->{}->Void) : Query {})
+	@:overload(function (criteria:Query, doc:{}) : Query {})
+	@:overload(function (criteria:Query, doc:{}, callback:Error->{}->Void) : Query {})
+	@:overload(function (criteria:Query, doc:{}, options:{}) : Query {})
 	@:overload(function (criteria:{}, doc:{}) : Query {})
 	@:overload(function (criteria:{}, doc:{}, callback:Error->{}->Void) : Query {})
 	@:overload(function (criteria:{}, doc:{}, options:{}) : Query {})
@@ -1312,6 +1317,63 @@ extern class Query
 	 * @throws Error if operation is not a find
 	 * @returns {Stream} Node 0.8 style
 	 */
-	public function stream(?streamOptions:{}) : js.node.stream.Readable;
+	public function stream(?streamOptions:{}) : IReadable;
+
+	/**
+	 * Specifies paths which should be populated with other documents.
+	 *
+	 * ####Example:
+	 *
+	 *     Kitten.findOne().populate('owner').exec(function (err, kitten) {
+	 *       console.log(kitten.owner.name) // Max
+	 *     })
+	 *
+	 *     Kitten.find().populate({
+	 *         path: 'owner'
+	 *       , select: 'name'
+	 *       , match: { color: 'black' }
+	 *       , options: { sort: { name: -1 }}
+	 *     }).exec(function (err, kittens) {
+	 *       console.log(kittens[0].owner.name) // Zoopa
+	 *     })
+	 *
+	 *     // alternatively
+	 *     Kitten.find().populate('owner', 'name', null, {sort: { name: -1 }}).exec(function (err, kittens) {
+	 *       console.log(kittens[0].owner.name) // Zoopa
+	 *     })
+	 *
+	 * Paths are populated after the query executes and a response is received. A separate query is then executed for each path specified for population. After a response for each query has also been returned, the results are passed to the callback.
+	 *
+	 * @param {Object|String} path either the path to populate or an object specifying all parameters
+	 * @param {Object|String} [select] Field selection for the population query
+	 * @param {Model} [model] The name of the model you wish to use for population. If not specified, the name is looked up from the Schema ref.
+	 * @param {Object} [match] Conditions for the population query
+	 * @param {Object} [options] Options for the population query (sort, etc)
+	 * @see population ./populate.html
+	 * @see Query#select #query_Query-select
+	 * @see Model.populate #model_Model.populate
+	 * @return {Query} this
+	 * @api public
+	 */
+	@:overload(function (params:{}) : Query {})
+	@:overload(function (path:String, options:{}) : Query {})
+	@:overload(function (path:String, match:{}, options:{}) : Query {})
+	@:overload(function (path:String, model:Model, match:{}, options:{}) : Query {})
+	@:overload(function (path:String, select:String, model:Model, match:{}, options:{}) : Query {})
+	public function populate(path:String, select:String, model:Model, match:{}, options:{}) : Query;
+
+	/**
+	 * Casts this query to the schema of `model`
+	 *
+	 * ####Note
+	 *
+	 * If `obj` is present, it is cast instead of this query.
+	 *
+	 * @param {Model} model
+	 * @param {Object} [obj]
+	 * @return {Object}
+	 * @api public
+	 */
+	public function cast(model:Model, ?obj:{}) : {};
 
 } // End of Query class
