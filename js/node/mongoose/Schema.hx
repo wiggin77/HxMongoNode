@@ -1,5 +1,6 @@
 package js.node.mongoose;
 
+import haxe.Constraints.Function;
 import js.node.events.EventEmitter;
 
 typedef SchemaOptions = {
@@ -22,6 +23,9 @@ typedef SchemaOptions = {
 @:jsRequire("mongoose", "Schema")
 extern class Schema extends EventEmitter<Schema>
 {
+	public var indexTypes(default,null) : Array<String>;
+
+
 	/**
 	 * Schema constructor.
 	 *
@@ -125,5 +129,192 @@ extern class Schema extends EventEmitter<Schema>
 	 * @return {Array}
 	 */
 	public function requiredPaths(invalidate:Bool) : Array<String>;
+
+	/**
+	 * Returns the pathType of `path` for this schema.
+	 *
+	 * Given a path, returns whether it is a real, virtual, nested, or ad-hoc/undefined path.
+	 *
+	 * @param {String} path
+	 * @return {String}
+	 * @api public
+	 */
+	public function pathType(path:String) : String;
+
+	/**
+	 * Adds a method call to the queue.
+	 *
+	 * @param {String} name name of the document method to call later
+	 * @param {Array} args arguments to pass to the method
+	 * @api public
+	 */
+	public function queue(name:String, args:Array<Dynamic>) : Schema;
+
+	/**
+	 * Defines a pre hook for the document.
+	 *
+	 * ####Example
+	 *
+	 *     var toySchema = new Schema(..);
+	 *
+	 *     toySchema.pre('save', function (next) {
+	 *       if (!this.created) this.created = new Date;
+	 *       next();
+	 *     })
+	 *
+	 *     toySchema.pre('validate', function (next) {
+	 *       if (this.name != 'Woody') this.name = 'Woody';
+	 *       next();
+	 *     })
+	 *
+	 * @param {String} method
+	 * @param {Function} callback
+	 * @see hooks.js https://github.com/bnoguchi/hooks-js/tree/31ec571cef0332e21121ee7157e0cf9728572cc3
+	 * @api public
+	 */
+
+	public function pre(method:String, callback:Function) : Schema;
+
+	/**
+	 * Defines a post hook for the document
+	 *
+	 * Post hooks fire `on` the event emitted from document instances of Models compiled from this schema.
+	 *
+	 *     var schema = new Schema(..);
+	 *     schema.post('save', function (doc) {
+	 *       console.log('this fired after a document was saved');
+	 *     });
+	 *
+	 *     var Model = mongoose.model('Model', schema);
+	 *
+	 *     var m = new Model(..);
+	 *     m.save(function (err) {
+	 *       console.log('this fires after the `post` hook');
+	 *     });
+	 *
+	 * @param {String} method name of the method to hook
+	 * @param {Function} fn callback
+	 * @see hooks.js https://github.com/bnoguchi/hooks-js/tree/31ec571cef0332e21121ee7157e0cf9728572cc3
+	 * @api public
+	 */
+	public function post(method:String, fn:Function) : Schema;
+
+	/**
+	 * Registers a plugin for this schema.
+	 *
+	 * @param {Function} plugin callback
+	 * @param {Object} [opts]
+	 * @see plugins
+	 * @api public
+	 */
+	public function plugin(fn:Function, opts:{}) : Schema;
+
+	/**
+	 * Adds an instance method to documents constructed from Models compiled from this schema.
+	 *
+	 * ####Example
+	 *
+	 *     var schema = kittySchema = new Schema(..);
+	 *
+	 *     schema.method('meow', function () {
+	 *       console.log('meeeeeoooooooooooow');
+	 *     })
+	 *
+	 *     var Kitty = mongoose.model('Kitty', schema);
+	 *
+	 *     var fizz = new Kitty;
+	 *     fizz.meow(); // meeeeeooooooooooooow
+	 *
+	 * If a hash of name/fn pairs is passed as the only argument, each name/fn pair will be added as methods.
+	 *
+	 *     schema.method({
+	 *         purr: function () {}
+	 *       , scratch: function () {}
+	 *     });
+	 *
+	 *     // later
+	 *     fizz.purr();
+	 *     fizz.scratch();
+	 *
+	 * @param {String|Object} method name
+	 * @param {Function} [fn]
+	 * @api public
+	 */
+	@:overload(function(map:{}) : Schema {})
+	public function method(name:String, fn:Function) : Schema;
+
+	/**
+	 * Adds static "class" methods to Models compiled from this schema.
+	 *
+	 * ####Example
+	 *
+	 *     var schema = new Schema(..);
+	 *     schema.static('findByName', function (name, callback) {
+	 *       return this.find({ name: name }, callback);
+	 *     });
+	 *
+	 *     var Drink = mongoose.model('Drink', schema);
+	 *     Drink.findByName('sanpellegrino', function (err, drinks) {
+	 *       //
+	 *     });
+	 *
+	 * If a hash of name/fn pairs is passed as the only argument, each name/fn pair will be added as statics.
+	 *
+	 * @param {String} name
+	 * @param {Function} fn
+	 * @api public
+	 */
+	@:overload(function(map:{}) : Schema {})
+	public inline function static_(name:String, fn:Function) : Schema
+	{
+		return untyped this['static'].apply(this, arguments);
+	}
+
+	/**
+	 * Defines an index (most likely compound) for this schema.
+	 *
+	 * ####Example
+	 *
+	 *     schema.index({ first: 1, last: -1 })
+	 *
+	 * @param {Object} fields
+	 * @param {Object} [options]
+	 * @api public
+	 */
+	public function index(fields:{}, ?options:{}) : Schema;
+
+	/**
+	 * Sets/gets a schema option.
+	 *
+	 * @param {String} key option name
+	 * @param {Object} [value] if not passed, the current option value is returned
+	 * @api public
+	 */
+	@:overload(function(key:String) : Dynamic {})
+	public function set(key:String, value:Dynamic) : Schema;
+
+	/**
+	 * Gets a schema option.
+	 *
+	 * @param {String} key option name
+	 * @api public
+	 */
+	public function get(key:String) : Dynamic;
+ 
+	/**
+	 * Compiles indexes from fields and schema-level indexes
+	 *
+	 * @api public
+	 */
+	public function indexes() : Array<Array<Dynamic>>;
+
+	/**
+	 * Removes the given `path` (or [`paths`]).
+	 *
+	 * @param {String|Array} path
+	 *
+	 * @api public
+	 */
+	public function remove(path:String) : Void;
 
 } // End of Schema class
