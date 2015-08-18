@@ -933,7 +933,6 @@ extern class Query
 	 * @see tailable http://docs.mongodb.org/manual/tutorial/create-tailable-cursor/
 	 * @api public
 	 */
-	Query.prototype.tailable = function (val, opts) {
 	public function tailable(?b:Bool) : Query;
 
 	/**
@@ -1374,6 +1373,9 @@ extern class Query
 	 * @return {Object}
 	 * @api public
 	 */
-	public function cast(model:Model, ?obj:{}) : {};
+	public inline function cast_(model:Model, ?obj:{}) : {}
+	{
+		return untyped this['cast'](model, obj);
+	}
 
 } // End of Query class
