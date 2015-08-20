@@ -96,7 +96,7 @@ extern class Document extends EventEmitter<Document>
 	 * @param {Object} [options] optionally specify options that modify the behavior of the set
 	 * @api public
 	 */
-	@:overload(function(path:{}}, val:Dynamic, ?type:Dynamic, ?options:{}) : Document {})
+	@:overload(function(path:{}, val:Dynamic, ?type:Dynamic, ?options:{}) : Document {})
 	public function set(path:String, val:Dynamic, ?type:Dynamic, ?options:{}) : Document;
 
 	/**
