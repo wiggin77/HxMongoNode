@@ -1,20 +1,26 @@
-[<img src="http://www.mongodb.com/sites/mongodb.com/files/media/mongodb-logo-rgb.jpeg" width="280px" alt="MongoDB logo">](http://www.mongodb.org)
+[<img src="https://www.mongodb.org/static/images/mongodb-logo-large.png" width="280px" alt="MongoDB logo">](http://www.mongodb.org)
+
+[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Smit.m.rhinogale.melleri.jpg/120px-Smit.m.rhinogale.melleri.jpg" width="120px" alt="Mongoose">](http://mongoosejs.com/)
 
 [<img src="http://haxe.org/img/haxe-logo-horizontal.svg" alt="Haxe logo" width="140">](http://haxe.org)
 
 [<img src="http://nodejs.org/images/logos/nodejs.png" width="140px" alt="nodejs logo">](http://nodejs.org)
 
-# Haxe MongoDB for node.js
+
+
+
+
+# HxMongo
 
 ### Overview
 
-Extern classes for MongoDB nodejs driver.  
+Extern classes for Mongoose and MongoDB nodejs driver.  
 
 ### Installation
 
 * Install and make available in the command line **[NodeJS](http://nodejs.org/)**
 * Create a Javascript project.
-* Run `haxelib install hxmongodb` (once this lib has been added to haxelib)
+* Run `haxelib install HxMongo` (once this lib has been added to haxelib)
 
 ### Build and Run
 
@@ -27,10 +33,12 @@ Extern classes for MongoDB nodejs driver.
 
 * This package needs `NPM` manager: **(remember to install)**
   * `mongodb`
+  * `mongoose` (optional)
 
 ### QuickStart
 
 [MongoDB driver quickstart guide](http://mongodb.github.io/node-mongodb-native/2.0/)
+[Mongoose quickstart guide](http://mongoosejs.com/docs/index.html)
 
 ### Test app
 
