@@ -6,6 +6,7 @@
   "author": "wiggin77",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "mongodb": "~2.0.32"
+    "mongodb": "~2.0",
+    "mongoose": "~4.1"
   }
 }
