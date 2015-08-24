@@ -17,6 +17,7 @@ class TestMain
 
 		runner.add(new com.dal.mongotest.TestMongo());
 		runner.add(new com.dal.mongotest.TestAdmin());
+		runner.add(new com.dal.mongotest.TestMongoose());
 
 		var prom:Promise<TestResult> = runner.run();
 		prom.then(function(result) { onTestRunComplete(result); return result; } );
