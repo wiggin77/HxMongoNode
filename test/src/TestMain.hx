@@ -15,9 +15,11 @@ class TestMain
 	{
 		var runner = new com.dal.common.unit.TestRunner();
 
-		runner.add(new com.dal.mongotest.TestMongo());
-		runner.add(new com.dal.mongotest.TestAdmin());
-		runner.add(new com.dal.mongotest.TestMongoose());
+		runner.add(new com.dal.mongotest.TestPromUtil());
+
+		//runner.add(new com.dal.mongotest.TestMongo());
+		//runner.add(new com.dal.mongotest.TestAdmin());
+		//runner.add(new com.dal.mongotest.TestMongoose());
 
 		var prom:Promise<TestResult> = runner.run();
 		prom.then(function(result) { onTestRunComplete(result); return result; } );
