@@ -56,36 +56,12 @@ class TestMongoose extends TestCase
 		return d.promise();
 	}
 
-
 	private function onConnect(err:Error) : Void
 	{
 		var str = (err == null) ? "Connected to server." : "Error connecting to server: " + err;
 		trace(str);
 		assertNull(err);
 	}
-
-
-	public static function series<T>(calls:Array<Void->Promise<T>>) : Promise<T>
-	{
-		if(calls == null || calls.length == 0)
-		{
-			return Promise.promise(null);
-		}
-
-		var i = 0;
-		var c = function() {
-			var p = calls[i]();
-			
-		};
-
-		
-		// TODO
-		return null;
-	}
-
-
-
-
 
 
 } // End of TestMongoose class
