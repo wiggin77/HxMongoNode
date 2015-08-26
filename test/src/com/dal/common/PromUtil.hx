@@ -66,9 +66,8 @@ class PromUtil
 				});
 				
 				prom.then(function(v:T) {
-					var bOk = prom.isFulfilled();
-					state.sres.results.push({val:v, success:bOk, exp:null});
-					bOk ? state.sres.successes++ : state.sres.fails++;
+					state.sres.results.push({val:v, success:true, exp:null});
+					state.sres.successes++;
 					state.idx++;
 					seriesLoop(calls, state);
 				});
